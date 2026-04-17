@@ -20,19 +20,7 @@ class OdsAdapter(Adapter):
     # Read
 
     def read_package(self) -> Package:
-        package = Package()
-        with self.resource:
-            bytes = io.BytesIO(self.resource.byte_stream.read())
-            book = platform.ezodf.opendoc(bytes)
-            for sheet in book.sheets:
-                resource = Resource(
-                    name=slugify(sheet.name),
-                    path=self.resource.normpath,
-                    control=OdsControl(sheet=sheet.name),
-                )
-                package.add_resource(resource)
-        package.deduplicate_resoures()
-        return package
+        pass
 
     # Write
 

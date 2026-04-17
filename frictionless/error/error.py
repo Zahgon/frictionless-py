@@ -58,15 +58,7 @@ class Error(Metadata):
     def list_children(
         cls, *, root: bool = False, exclude: Optional[List[Type[Error]]] = None
     ) -> List[Type[Error]]:
-        children: List[Type[Error]] = []
-        for item in vars(platform.frictionless_errors).values():
-            if isinstance(item, type) and issubclass(item, cls):
-                if not root and item is cls:
-                    continue
-                if exclude and issubclass(item, tuple(exclude)):  # type: ignore
-                    continue
-                children.append(item)
-        return children
+        pass
 
     # Metadata
 

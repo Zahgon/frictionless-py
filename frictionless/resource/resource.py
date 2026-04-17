@@ -267,74 +267,54 @@ class Resource(Metadata, metaclass=Factory):  # type: ignore
     @property
     def paths(self) -> List[str]:
         """All paths of the resource"""
-        paths: List[str] = []
-        if self.path is not None:
-            paths.append(self.path)
-        paths.extend(self.extrapaths)
-        return paths
+        pass
 
     @property
     def normpaths(self) -> List[str]:
         """Normalized paths of the resource"""
-        normpaths: List[str] = []
-        for path in self.paths:
-            normpaths.append(helpers.normalize_path(path, basepath=self.basepath))
-        return normpaths
+        pass
 
     @property
     def normpath(self) -> Optional[str]:
         """Normalized path of the resource or raise if not set"""
-        if self.path:
-            return helpers.normalize_path(self.path, basepath=self.basepath)
+        pass
 
     # TODO: add asterisks for user/pass in url
     @property
     def place(self) -> str:
         """Stringified resource location"""
-        if self.data is not None:
-            return "<memory>"
-        elif self.extrapaths:
-            return f"{self.path} (multipart)"
-        elif self.innerpath:
-            return f"{self.path} -> {self.innerpath}"
-        elif self.path:
-            return self.path
-        return ""
+        pass
 
     @property
     def memory(self) -> bool:
         """Whether resource is not path based"""
-        return self.data is not None
+        pass
 
     @property
     def remote(self) -> bool:
         """Whether resource is remote"""
-        return helpers.is_remote_path(self.basepath or self.path or "")
+        pass
 
     @property
     def multipart(self) -> bool:
         """Whether resource is multipart"""
-        return not self.memory and bool(self.extrapaths)
+        pass
 
     @property
     def dialect(self) -> Dialect:
-        if isinstance(self._dialect, str):
-            self._dialect = Dialect.from_descriptor(self._dialect, basepath=self.basepath)
-        return self._dialect
+        pass
 
     @dialect.setter
     def dialect(self, value: Union[Dialect, str]):
-        self._dialect = value
+        pass
 
     @property
     def schema(self) -> Schema:
-        if isinstance(self._schema, str):
-            self._schema = Schema.from_descriptor(self._schema, basepath=self.basepath)
-        return self._schema
+        pass
 
     @schema.setter
     def schema(self, value: Union[Schema, str]):
-        self._schema = value
+        pass
 
     @property
     def basepath(self) -> Optional[str]:
@@ -342,14 +322,11 @@ class Resource(Metadata, metaclass=Factory):  # type: ignore
         A basepath of the resource
         The normpath of the resource is joined `basepath` and `/path`
         """
-        if self._basepath:
-            return self._basepath
-        if self.package:
-            return self.package.basepath
+        pass
 
     @basepath.setter
     def basepath(self, value: Optional[str]):
-        self._basepath = value
+        pass
 
     # Open/Close
 
@@ -360,9 +337,7 @@ class Resource(Metadata, metaclass=Factory):  # type: ignore
         These buffer bytes are used to infer characteristics of the
         source file (e.g. encoding, ...).
         """
-        if self.__buffer is None:
-            raise FrictionlessException("resource is not open or non binary")
-        return self.__buffer
+        pass
 
     @property
     def byte_stream(self) -> types.IByteStream:
@@ -371,12 +346,7 @@ class Resource(Metadata, metaclass=Factory):  # type: ignore
         Yields:
             gen<bytes>?: byte stream
         """
-        if self.closed:
-            raise FrictionlessException("resource is not open or non binary")
-        if not self.__loader:
-            self.__loader = system.create_loader(self)
-            self.__loader.open()
-        return self.__loader.byte_stream
+        pass
 
     @property
     def text_stream(self) -> types.ITextStream:
@@ -385,12 +355,7 @@ class Resource(Metadata, metaclass=Factory):  # type: ignore
         Yields:
             gen<str[]>?: text stream
         """
-        if self.closed:
-            raise FrictionlessException("resource is not open or non textual")
-        if not self.__loader:
-            self.__loader = system.create_loader(self)
-            self.__loader.open()
-        return self.__loader.text_stream
+        pass
 
     @property
     def closed(self) -> bool:
@@ -399,7 +364,7 @@ class Resource(Metadata, metaclass=Factory):  # type: ignore
         Returns:
             bool: if closed
         """
-        return self.__loader is None
+        pass
 
     def close(self) -> None:
         """Close the resource as "filelike.close" does"""
@@ -409,15 +374,7 @@ class Resource(Metadata, metaclass=Factory):  # type: ignore
 
     def open(self):
         """Open the resource as "io.open" does"""
-        self.close()
-        try:
-            self.__loader = system.create_loader(self)
-            self.__loader.open()
-            self.__buffer = self.__loader.buffer
-        except Exception:
-            self.close()
-            raise
-        return self
+        pass
 
     # Convert
 
@@ -480,12 +437,7 @@ class Resource(Metadata, metaclass=Factory):  # type: ignore
         Returns:
             any: resource data
         """
-        if self.data is not None:
-            return self.data
-        with helpers.ensure_open(self):
-            text = self.read_text(size=size)
-            data = json.loads(text)
-            return data
+        pass
 
     # Infer
 
@@ -514,10 +466,7 @@ class Resource(Metadata, metaclass=Factory):  # type: ignore
         If some of underlaying metadata is provided as a string
         it will replace it by the metadata object
         """
-        self.dialect.metadata_descriptor_path = None
-        self.dialect.metadata_descriptor_initial = None
-        self.schema.metadata_descriptor_path = None
-        self.schema.metadata_descriptor_initial = None
+        pass
 
     # Describe
 
@@ -591,7 +540,7 @@ class Resource(Metadata, metaclass=Factory):  # type: ignore
             name: limit to one resource (if applicable)
 
         """
-        return [self]
+        pass
 
     # Validate
 

@@ -23,32 +23,7 @@ class HtmlParser(Parser):
     # Read
 
     def read_cell_stream_create(self) -> types.ICellStream:
-        pq = platform.pyquery.PyQuery
-
-        # Get table
-        page = pq(self.loader.text_stream.read(), parser="html")
-        control = HtmlControl.from_dialect(self.resource.dialect)
-        tables = page.find(control.selector)
-        table = pq(tables[0]) if tables else None
-        if not table:
-            return
-
-        # Stream headers
-        data = (
-            table.children("thead").children("tr")
-            + table.children("thead")
-            + table.children("tr")
-            + table.children("tbody").children("tr")
-        )
-        data = [pq(r) for r in data if len(r) > 0]
-        first_row = data.pop(0)
-        headers = [pq(th).text() for th in first_row.find("th,td")]
-        yield headers
-
-        # Stream data
-        data = [pq(tr).find("td") for tr in data]
-        data = [[pq(td).text() for td in tr] for tr in data if len(tr) > 0]
-        yield from data
+        pass
 
     # Write
 

@@ -21,8 +21,7 @@ class MultipartPlugin(Plugin):
             return MultipartLoader(resource)
 
     def detect_resource(self, resource: Resource):
-        if resource.extrapaths:
-            resource.scheme = "multipart"
+        pass
 
     def select_control_class(self, type: Optional[str] = None):
         if type == "multipart":

@@ -139,108 +139,30 @@ class Dialect(Metadata, metaclass=Factory):
 
     def set_control(self, control: Control) -> Optional[Control]:
         """Set control by type"""
-        if self.has_control(control.type):
-            prev_control = self.get_control(control.type)
-            index = self.controls.index(prev_control)
-            self.controls[index] = control
-            control.schema = self
-            return prev_control
-        self.add_control(control)
+        pass
 
     # Read
 
     def read_labels(self, sample: types.ISample):
-        first_content_row = self.create_first_content_row()
-        comment_filter = self.create_comment_filter()
-
-        # Collect lists
-        lists: List[List[str]] = []
-        for row_number, cells in enumerate(sample, start=1):
-            if comment_filter:
-                if not comment_filter(row_number, cells):
-                    continue
-            if self.header:
-                if row_number in self.header_rows:
-                    lists.append(helpers.stringify_label(cells))
-            if row_number >= first_content_row:
-                break
-
-        # Get labels
-        labels: List[str] = []
-        prev_cells: Dict[int, Any] = {}
-        for cells in lists:
-            for index, cell in enumerate(cells):
-                if prev_cells.get(index) == cell:
-                    continue
-                prev_cells[index] = cell
-                if len(labels) <= index:
-                    labels.append(cell)
-                    continue
-                labels[index] = self.header_join.join([labels[index], cell])
-
-        return labels
+        pass
 
     def read_fragment(self, sample: types.ISample):
         # Collect fragment
-        fragment: List[List[Any]] = []
-        for _, cells in self.read_enumerated_content_stream(sample):
-            fragment.append(cells)
-
-        return fragment
+        pass
 
     def read_enumerated_content_stream(self, cell_stream: Iterable[List[Any]]):
-        first_content_row = self.create_first_content_row()
-        comment_filter = self.create_comment_filter()
-        blank_filter = self.create_blank_filter()
-
-        # Emit content stream
-        for row_number, cells in enumerate(cell_stream, start=1):
-            if row_number < first_content_row:
-                continue
-            if comment_filter:
-                if not comment_filter(row_number, cells):
-                    continue
-            if blank_filter:
-                if not blank_filter(cells):
-                    continue
-            yield (row_number, cells)
+        pass
 
     # Filter
 
     def create_first_content_row(self):
-        if self.header and self.header_rows:
-            return self.header_rows[-1] + 1
-        return 1
+        pass
 
     def create_comment_filter(self):
-        if not self.comment_char and not self.comment_rows:
-            return None
-
-        # Create filter
-        def comment_filter(row_number: int, cells: List[Any]):
-            if self.comment_char:
-                if cells and isinstance(cells[0], str):
-                    if cells[0].startswith(self.comment_char):
-                        return False
-            if self.comment_rows:
-                if row_number in self.comment_rows:
-                    return False
-            return True
-
-        return comment_filter
+        pass
 
     def create_blank_filter(self):
-        if not self.skip_blank_rows:
-            return None
-
-        # Create filter
-        def blank_filter(cells: List[Any]):
-            for cell in cells:
-                if cell not in [None, ""]:
-                    return True
-            return False
-
-        return blank_filter
+        pass
 
     # Metadata
 

@@ -25,29 +25,7 @@ class CsvParser(Parser):
     # Read
 
     def read_cell_stream_create(self):  # type: ignore
-        control = CsvControl.from_dialect(self.resource.dialect)
-        sample = extract_samle(self.loader.text_stream)
-        if self.resource.format == "tsv":
-            control.set_not_defined("delimiter", "\t")
-        delimiter = control.get_defined("delimiter", default=",\t;|")
-        try:
-            config = csv.Sniffer().sniff("".join(sample), delimiter)  # type: ignore
-        except csv.Error:
-            config = csv.excel()
-        # We can't rely on this guess as it's can be confused with embedded JSON
-        # https://github.com/frictionlessdata/frictionless-py/issues/493
-        if config.quotechar == "'":
-            config.quotechar = '"'
-        control.set_not_defined("delimiter", config.delimiter, distinct=True)
-        control.set_not_defined("line_terminator", config.lineterminator, distinct=True)
-        control.set_not_defined("escape_char", config.escapechar, distinct=True)
-        control.set_not_defined("quote_char", config.quotechar, distinct=True)
-        control.set_not_defined(
-            "skip_initial_space", config.skipinitialspace, distinct=True
-        )
-        source = chain(sample, self.loader.text_stream)
-        data = csv.reader(source, dialect=control.to_python())  # type: ignore
-        yield from data
+        pass
 
     # Write
 
@@ -78,15 +56,7 @@ SAMPLE_SIZE = 100
 
 
 def extract_samle(text_stream: types.ITextStream) -> types.ISample:
-    sample: types.ISample = []
-    while True:
-        try:
-            sample.append(next(text_stream))  # type: ignore
-        except StopIteration:
-            break
-        if len(sample) >= SAMPLE_SIZE:
-            break
-    return sample
+    pass
 
 
 # System

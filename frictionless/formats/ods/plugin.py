@@ -37,11 +37,7 @@ class OdsPlugin(Plugin):
             return OdsParser(resource)
 
     def detect_resource(self, resource: Resource):
-        if resource.format == "ods":
-            resource.datatype = resource.datatype or "table"
-            resource.mediatype = (
-                resource.mediatype or "application/vnd.oasis.opendocument.spreadsheet"
-            )
+        pass
 
     def select_control_class(self, type: Optional[str] = None):
         if type == "ods":

@@ -24,68 +24,14 @@ class SpssParser(Parser):
     # Read
 
     def read_cell_stream_create(self):
-        sav = platform.sav_reader_writer
-        warnings.filterwarnings("ignore", category=sav.SPSSIOWarning)  # type: ignore
-
-        # Schema
-        with sav.SavHeaderReader(self.resource.normpath, ioUtf8=True) as reader:  # type: ignore
-            spss_schema = reader.all()
-        schema = self.__read_convert_schema(spss_schema)
-        self.resource.schema = schema
-
-        # Lists
-        yield schema.field_names
-        with sav.SavReader(self.resource.normpath, ioUtf8=True) as reader:  # type: ignore
-            for item in reader:
-                cells: List[Any] = []
-                for index, field in enumerate(schema.fields):
-                    value = item[index]
-                    if value is not None:
-                        if field.type == "integer":
-                            value = int(float(value))
-                        elif field.type in ["datetime", "date", "time"]:
-                            format = settings.FORMAT_READ[field.type]
-                            value = reader.spss2strDate(value, format, None)
-                    cells.append(value)
-                yield cells
+        pass
 
     def __read_convert_schema(self, spss_schema: Any):
-        schema = Schema()
-        for name in spss_schema.varNames:
-            type = self.__read_convert_type(spss_schema.formats[name])
-            field = Field.from_descriptor({"name": name, "type": type})
-            title = spss_schema.varLabels[name]
-            if title:
-                field.title = title
-            schema.add_field(field)
-        return schema
+        pass
 
     def __read_convert_type(self, spss_type: Optional[str] = None):
         # Mapping
-        mapping = [
-            ("string", re.compile(r"\bA\d+")),
-            ("number", re.compile(r"\bF\d+\.\d+")),  # Basic decimal number
-            ("number", re.compile(r"\b[E|N]\d+\.?\d*")),  # Exponent or N format number
-            (
-                "integer",
-                re.compile(r"\bF\d+"),
-            ),  # Integer (must come after Basic decimal in list)
-            ("date", re.compile(r"\b[A|E|J|S]?DATE\d+")),  # Various date formats
-            ("datetime", re.compile(r"\bDATETIME\d+")),
-            ("time", re.compile(r"\bTIME\d+")),
-            ("number", re.compile(r"\bDOLLAR\d+")),
-            ("number", re.compile(r"\bPCT\d+")),  # Percentage format
-        ]
-
-        # Return type
-        if spss_type:
-            for type, pattern in mapping:
-                if pattern.match(spss_type):
-                    return type
-            return "string"
-
-        # Return mapping
-        return mapping
+        pass
 
     # Write
 

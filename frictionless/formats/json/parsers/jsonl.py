@@ -28,17 +28,7 @@ class JsonlParser(Parser):
     # Read
 
     def read_cell_stream_create(self) -> types.ICellStream:
-        control = JsonControl.from_dialect(self.resource.dialect)
-        source = iter(platform.jsonlines.Reader(self.loader.text_stream))
-        inline_control = InlineControl(keys=control.keys)
-        with TableResource(
-            data=source, format="inline", control=inline_control
-        ) as resource:
-            yield next(resource.cell_stream)  # type: ignore
-            inline_control = InlineControl.from_dialect(resource.dialect)
-            if inline_control.keyed:
-                control.keyed = True
-            yield from resource.cell_stream
+        pass
 
     # Write
 

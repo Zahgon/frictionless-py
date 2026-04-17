@@ -39,15 +39,7 @@ class JsonResource(Resource):
         Returns:
             any: json data
         """
-        if self.data is not None:
-            return self.data
-        with helpers.ensure_open(self):
-            text = self.read_text()
-            return (
-                platform.yaml.safe_load(text)
-                if self.format == "yaml"
-                else json.loads(text)
-            )
+        pass
 
     # Write
 
@@ -56,17 +48,7 @@ class JsonResource(Resource):
         self, target: Optional[Union[JsonResource, Any]] = None, **options: Any
     ):
         """Write json data to the target"""
-        resource = target
-        if not isinstance(resource, Resource):
-            resource = Resource(target, **options)
-        if not isinstance(resource, JsonResource):
-            raise FrictionlessException("target must be a json resource")
-        data = self.read_json()
-        dump = helpers.to_yaml if resource.format == "yaml" else helpers.to_json
-        bytes = dump(data).encode("utf-8")
-        assert resource.normpath
-        helpers.write_file(resource.normpath, bytes, mode="wb")
-        return resource
+        pass
 
 
 class ChartResource(JsonResource):
@@ -90,9 +72,7 @@ class MetadataResource(JsonResource, Generic[T]):
 
     @property
     def descriptor(self) -> Union[types.IDescriptor, str]:
-        descriptor = self.data if self.data is not None else self.path
-        assert isinstance(descriptor, (str, dict))
-        return descriptor
+        pass
 
     # Read
 
@@ -187,8 +167,7 @@ class ResourceResource(MetadataResource[Resource]):
 
     def list(self, *, name: Optional[str] = None) -> List[Resource]:
         """List dataset resources"""
-        resource = self.read_metadata()
-        return [resource]
+        pass
 
     # Validate
 
@@ -249,8 +228,7 @@ class PackageResource(MetadataResource[Package]):
     # List
 
     def list(self, *, name: Optional[str] = None) -> List[Resource]:
-        package = self.read_metadata()
-        return package.resources if name is None else [package.get_resource(name)]
+        pass
 
     # Validate
 

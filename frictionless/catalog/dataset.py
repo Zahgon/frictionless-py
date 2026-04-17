@@ -67,14 +67,11 @@ class Dataset(Metadata):
 
     @property
     def basepath(self) -> Optional[str]:
-        if self._basepath:
-            return self._basepath
-        if self.catalog:
-            return self.catalog.basepath
+        pass
 
     @basepath.setter
     def basepath(self, value: Optional[str]):
-        self._basepath = value
+        pass
 
     # Infer
 
@@ -94,8 +91,7 @@ class Dataset(Metadata):
         If some of underlaying metadata is provided as a string
         it will replace it by the metadata object
         """
-        self.package.metadata_descriptor_path = None
-        self.package.metadata_descriptor_initial = None
+        pass
 
     # Metadata
 

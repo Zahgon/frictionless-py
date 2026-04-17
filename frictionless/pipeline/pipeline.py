@@ -46,47 +46,33 @@ class Pipeline(Metadata):
     @property
     def step_types(self) -> List[str]:
         """Return type list of the steps"""
-        return [step.type for step in self.steps]
+        pass
 
     # Steps
 
     def add_step(self, step: Step) -> None:
         """Add new step to the schema"""
-        self.steps.append(step)
+        pass
 
     def has_step(self, type: str) -> bool:
         """Check if a step is present"""
-        for step in self.steps:
-            if step.type == type:
-                return True
-        return False
+        pass
 
     def get_step(self, type: str) -> Step:
         """Get step by type"""
-        for step in self.steps:
-            if step.type == type:
-                return step
-        error = errors.PipelineError(note=f'step "{type}" does not exist')
-        raise FrictionlessException(error)
+        pass
 
     def set_step(self, step: Step) -> Optional[Step]:
         """Set step by type"""
-        if self.has_step(step.type):
-            prev_step = self.get_step(step.type)
-            index = self.steps.index(prev_step)
-            self.steps[index] = step
-            return prev_step
-        self.add_step(step)
+        pass
 
     def remove_step(self, type: str) -> Step:
         """Remove step by type"""
-        step = self.get_step(type)
-        self.steps.remove(step)
-        return step
+        pass
 
     def clear_steps(self) -> None:
         """Remove all the steps"""
-        self.steps = []
+        pass
 
     # Metadata
 

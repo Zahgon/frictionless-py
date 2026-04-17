@@ -32,16 +32,7 @@ class TextResource(Resource):
         self, target: Optional[Union[TextResource, Any]] = None, **options: Any
     ):
         """Write text data to the target"""
-        resource = target
-        if not isinstance(resource, Resource):
-            resource = TextResource(**options)
-        if not isinstance(resource, TextResource):  # type: ignore
-            raise FrictionlessException("target must be a text resource")
-        text = self.read_text()
-        bytes = text.encode(resource.encoding or "utf-8")
-        assert resource.normpath
-        helpers.write_file(resource.normpath, bytes, mode="wb")
-        return resource
+        pass
 
 
 class ArticleResource(TextResource):

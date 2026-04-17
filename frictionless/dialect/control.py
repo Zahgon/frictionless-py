@@ -55,7 +55,7 @@ class Control(Metadata):
         return control
 
     def to_dialect(self):
-        return platform.frictionless.Dialect(controls=[self])
+        pass
 
     # Metadata
 

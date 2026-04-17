@@ -73,15 +73,12 @@ class ReportTask(Metadata):
     @property
     def error(self):
         """Validation error if there is only one"""
-        if len(self.errors) != 1:
-            error = Error(note='The "task.error" is available for single error tasks')
-            raise FrictionlessException(error)
-        return self.errors[0]
+        pass
 
     @property
     def tabular(self) -> bool:
         """Whether task's resource is tabular"""
-        return self.type == "table"
+        pass
 
     # Flatten
 
@@ -94,12 +91,7 @@ class ReportTask(Metadata):
         Returns:
             any[]: flatten task report
         """
-        result: List[Any] = []
-        for error in self.errors:
-            context: Dict[str, Any] = {}
-            context.update(error.to_descriptor())
-            result.append([context.get(prop) for prop in spec])
-        return result
+        pass
 
     # Convert
 
@@ -109,28 +101,7 @@ class ReportTask(Metadata):
         Returns:
             str: validation summary
         """
-        error_list: Dict[str, Any] = {}
-        for error in self.errors:
-            error_title = f"{error.title}"
-            if error_title not in error_list:
-                error_list[error_title] = 0
-            error_list[error_title] += 1
-        size = self.stats.get("bytes")
-        content = [
-            ["File Place", self.place],
-            ["File Size", humanize.naturalsize(size) if size else "(file not found)"],
-            ["Total Time", f"{self.stats.get('seconds')} Seconds"],
-            ["Rows Checked", self.stats.get("rows")],
-        ]
-        if error_list:
-            content.append(["Total Errors", sum(error_list.values())])
-        for type, count in error_list.items():
-            content.append([type, count])
-        output = ""
-        for warning in self.warnings:
-            output += f"> {warning}\n\n"
-        output += tabulate(content, headers=["Name", "Value"], tablefmt="grid")
-        return output
+        pass
 
     # Metadata
 

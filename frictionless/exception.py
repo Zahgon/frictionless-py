@@ -26,11 +26,11 @@ class FrictionlessException(Exception):
 
     @property
     def error(self) -> Error:
-        return self.__error
+        pass
 
     @property
     def reasons(self) -> List[Error]:
-        return self.__reasons
+        pass
 
     # Convert
 

@@ -34,57 +34,7 @@ class InlineParser(Parser):
     # Read
 
     def read_cell_stream_create(self):  # type: ignore
-        assert self.resource.data
-        control = InlineControl.from_dialect(self.resource.dialect)
-
-        # Iter
-        data = self.resource.data
-        if not hasattr(data, "__iter__"):
-            data = data()
-        data = iter(data)
-
-        # Empty
-        try:
-            item = next(data)
-        except StopIteration:
-            yield from []
-            return
-
-        # Row
-        if hasattr(item, "cells"):
-            # Shall we yield field_names or header here?
-            yield item.field_names
-            yield item.cells
-            for item in data:
-                yield item.cells
-
-        # Keyed
-        elif isinstance(item, dict):
-            control.keyed = True
-            headers = control.keys or list(item.keys())  # type: ignore
-            if self.resource.schema:
-                headers = [field.name for field in self.resource.schema.fields]
-            yield headers
-            yield [item.get(header) for header in headers]  # type: ignore
-            for item in data:
-                if not isinstance(item, dict):
-                    error = errors.SourceError(note="unsupported inline data")
-                    raise FrictionlessException(error)
-                yield [item.get(header) for header in headers]  # type: ignore
-
-        # General
-        elif isinstance(item, (list, tuple)):
-            yield item
-            for item in data:
-                if not isinstance(item, (list, tuple)):
-                    error = errors.SourceError(note="unsupported inline data")
-                    raise FrictionlessException(error)
-                yield item
-
-        # Unsupported
-        else:
-            error = errors.SourceError(note="unsupported inline data")
-            raise FrictionlessException(error)
+        pass
 
     # Write
 

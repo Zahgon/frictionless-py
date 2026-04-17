@@ -97,11 +97,11 @@ class Field(Metadata):
     @property
     def required(self):
         """Indicates if field is mandatory."""
-        return self.constraints.get("required", False)
+        pass
 
     @required.setter
     def required(self, value: bool):
-        self.constraints["required"] = value
+        pass
 
     # Read
 
@@ -292,68 +292,31 @@ class Field(Metadata):
 
 
 def check_required(constraint: bool, cell: Any):
-    if not (constraint and cell is None):
-        return True
-    return False
+    pass
 
 
 def check_minLength(constraint: Any, cell: Any):
-    if cell is None:
-        return True
-    if len(cell) >= constraint:
-        return True
-    return False
+    pass
 
 
 def check_maxLength(constraint: Any, cell: Any):
-    if cell is None:
-        return True
-    if len(cell) <= constraint:
-        return True
-    return False
+    pass
 
 
 def check_minimum(constraint: Any, cell: Any):
-    if cell is None:
-        return True
-    try:
-        if cell >= constraint:
-            return True
-    except decimal.InvalidOperation:
-        # For non-finite numbers NaN, INF and -INF
-        # the constraint always is not satisfied
-        return False
-    return False
+    pass
 
 
 def check_maximum(constraint: Any, cell: Any):
-    if cell is None:
-        return True
-    try:
-        if cell <= constraint:
-            return True
-    except decimal.InvalidOperation:
-        # For non-finite numbers NaN, INF and -INF
-        # the constraint always is not satisfied
-        return False
-    return False
+    pass
 
 
 def check_pattern(constraint: Pattern[str], cell: Optional[str]):
-    if cell is None:
-        return True
-    match = constraint.match(cell)
-    if match:
-        return True
-    return False
+    pass
 
 
 def check_enum(constraint: List[Any], cell: Any):
-    if cell is None:
-        return True
-    if cell in constraint:
-        return True
-    return False
+    pass
 
 
 COMPILED_RE = type(re.compile(""))

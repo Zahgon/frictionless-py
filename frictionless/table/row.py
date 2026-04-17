@@ -106,7 +106,7 @@ class Row(Dict[str, Any]):
         Returns:
             Field[]: table schema fields
         """
-        return self.__cells
+        pass
 
     @cached_property
     def fields(self):
@@ -122,7 +122,7 @@ class Row(Dict[str, Any]):
         Returns:
             str[]: field names
         """
-        return self.__field_info["names"]
+        pass
 
     @cached_property
     def field_numbers(self):
@@ -130,7 +130,7 @@ class Row(Dict[str, Any]):
         Returns:
             str[]: field numbers
         """
-        return list(range(1, len(self.__field_info["names"]) + 1))
+        pass
 
     @cached_property
     def row_number(self) -> int:
@@ -138,7 +138,7 @@ class Row(Dict[str, Any]):
         Returns:
             int: row number from 1
         """
-        return self.__row_number
+        pass
 
     @cached_property
     def blank_cells(self):
@@ -147,8 +147,7 @@ class Row(Dict[str, Any]):
         Returns:
             dict: row blank cells
         """
-        self.__process()
-        return self.__blank_cells
+        pass
 
     @cached_property
     def error_cells(self):
@@ -157,8 +156,7 @@ class Row(Dict[str, Any]):
         Returns:
             dict: row error cells
         """
-        self.__process()
-        return self.__error_cells
+        pass
 
     @cached_property
     def errors(self):
@@ -175,8 +173,7 @@ class Row(Dict[str, Any]):
         Returns:
             bool: if row valid
         """
-        self.__process()
-        return not self.__errors
+        pass
 
     # Convert
 
@@ -185,9 +182,7 @@ class Row(Dict[str, Any]):
         Returns:
             str: a row as a CSV string
         """
-        types = platform.frictionless_formats.CsvParser.supported_types
-        cells = self.to_list(types=types)
-        return helpers.stringify_csv_string(cells, **options)
+        pass
 
     def to_list(self, *, json: bool = False, types: Optional[List[str]] = None):
         """

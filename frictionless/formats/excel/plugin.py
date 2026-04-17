@@ -39,9 +39,7 @@ class ExcelPlugin(Plugin):
             return XlsParser(resource)
 
     def detect_resource(self, resource: Resource):
-        if resource.format in ["xlsx", "xls"]:
-            resource.datatype = resource.datatype or "table"
-            resource.mediatype = resource.mediatype or "application/vnd.ms-excel"
+        pass
 
     def select_control_class(self, type: Optional[str] = None):
         if type == "excel":

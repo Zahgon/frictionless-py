@@ -20,13 +20,4 @@ def list(
     Returns:
         data resources
     """
-
-    # Create resource
-    resource = (
-        source
-        if isinstance(source, Resource)
-        else Resource(source, datatype=type, **options)
-    )
-
-    # List resource
-    return resource.list(name=name)
+    pass

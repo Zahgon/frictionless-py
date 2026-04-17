@@ -20,15 +20,7 @@ class GsheetsPlugin(Plugin):
             return GsheetsParser(resource)
 
     def detect_resource(self, resource: Resource):
-        if resource.path:
-            if "docs.google.com/spreadsheets" in resource.path:
-                resource.datatype = resource.datatype or "table"
-                if "export" not in resource.path and "pub" not in resource.path:
-                    resource.format = resource.format or "gsheets"
-                elif "csv" in resource.path:
-                    resource.scheme = resource.scheme or "https"
-                    resource.format = resource.format or "csv"
-                    resource.mediatype = resource.mediatype or "text/csv"
+        pass
 
     def select_control_class(self, type: Optional[str] = None):
         if type == "gsheets":

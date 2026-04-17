@@ -19,15 +19,7 @@ class MultipartLoader(Loader):
     # Read
 
     def read_byte_stream_create(self):  # type: ignore
-        assert self.resource.normpath
-        remote = self.resource.remote
-        headless = self.resource.dialect.header is False
-        headless = headless or self.resource.format != "csv"
-        return MultipartByteStream(
-            self.resource.normpaths,
-            remote=remote,
-            headless=headless,
-        )
+        pass
 
     # Write
 
@@ -64,20 +56,20 @@ class MultipartByteStream:
 
     @property
     def remote(self):
-        return self.__remote
+        pass
 
     @property
     def closed(self):
-        return False
+        pass
 
     def readable(self):
-        return True
+        pass
 
     def seekable(self):
-        return True
+        pass
 
     def writable(self):
-        return False
+        pass
 
     def close(self):
         pass

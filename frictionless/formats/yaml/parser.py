@@ -29,23 +29,7 @@ class YamlParser(Parser):
     # Read
 
     def read_cell_stream_create(self) -> types.ICellStream:
-        control = YamlControl.from_dialect(self.resource.dialect)
-        source = platform.yaml.safe_load(self.loader.byte_stream)
-        if control.property:
-            source = source[control.property]
-        inline_control = InlineControl(keys=control.keys)
-        with TableResource(
-            data=source, format="inline", control=inline_control
-        ) as resource:
-            try:
-                yield next(resource.cell_stream)  # type: ignore
-            except StopIteration:
-                note = f'cannot extract YAML tabular data from "{self.resource.normpath}"'
-                raise FrictionlessException(errors.SourceError(note=note))
-            inline_control = InlineControl.from_dialect(resource.dialect)
-            if inline_control.keyed:
-                control.keyed = True
-            yield from resource.cell_stream
+        pass
 
     # Write
 

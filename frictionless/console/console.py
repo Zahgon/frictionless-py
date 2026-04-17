@@ -29,9 +29,7 @@ console = Console()
 
 
 def version(value: bool):
-    if value:
-        typer.echo(settings.VERSION)
-        raise typer.Exit()
+    pass
 
 
 # Command

@@ -134,60 +134,13 @@ class Detector:
         source: Any, *, format: Optional[str] = None
     ) -> Optional[str]:
         """Return an descriptor type as 'resource' or 'package'"""
-        source = helpers.normalize_source(source)
-
-        # String
-        if isinstance(source, str):
-            for type, item in settings.METADATA_TRAITS.items():
-                if source.endswith(tuple(item["names"])):
-                    return type
-            format = format or helpers.parse_scheme_and_format(source)[1]
-            if format in ["json", "yaml"]:
-                try:
-                    size = settings.DEFAULT_BUFFER_SIZE * 10
-                    source = Metadata.metadata_retrieve(source, size=size)
-                except Exception:
-                    pass
-
-        # Mapping
-        if isinstance(source, dict):
-            for type, item in settings.METADATA_TRAITS.items():
-                if set(item["props"]).intersection(source.keys()):  # type: ignore
-                    return type
+        pass
 
     # Resource
 
     def detect_resource(self, resource: Resource) -> None:
         """Detects path details"""
-        name = "memory"
-        scheme = None
-        format = None
-        compression = None
-
-        # Detect details
-        if resource.path:
-            names: List[str] = []
-            for part in [resource.path] + (resource.extrapaths or []):
-                name = os.path.splitext(os.path.basename(part))[0]
-                names.append(name)
-            name = os.path.commonprefix(names)
-            name = helpers.slugify(name, regex_pattern=r"[^-a-z0-9._/]")
-            name = name or "name"
-            scheme, format = helpers.parse_scheme_and_format(resource.path)
-            if format in settings.COMPRESSION_FORMATS:
-                compression = format
-                path = resource.path[: -len(format) - 1]
-                if resource.innerpath:
-                    path = os.path.join(path, resource.innerpath)
-                scheme, format = helpers.parse_scheme_and_format(path)
-                if format:
-                    name = os.path.splitext(name)[0]
-
-        # Save details
-        resource.name = resource.name or name
-        resource.scheme = resource.scheme or scheme
-        resource.format = resource.format or format
-        resource.compression = resource.compression or compression
+        pass
 
     # Encoding
 
@@ -202,47 +155,7 @@ class Detector:
         Returns:
             str: encoding
         """
-
-        # User defined
-        if self.encoding_function:
-            return self.encoding_function(buffer)
-
-        # Detect encoding
-        if not encoding:
-            detector = platform.chardet.UniversalDetector()
-            for line in buffer.splitlines():
-                detector.feed(line)
-            detector.close()
-            encoding = detector.result["encoding"] or settings.DEFAULT_ENCODING
-            confidence = detector.result["confidence"] or 0
-            if confidence < self.encoding_confidence:
-                # low confidence, so we try UTF8
-                # If decoding fails, we fallback to the detected encoding
-                # despite the low-confidence
-                detected = encoding
-                encoding = settings.DEFAULT_ENCODING
-                try:
-                    buffer.decode(encoding)
-                except UnicodeDecodeError:
-                    encoding = detected
-            if encoding == "ascii":
-                encoding = settings.DEFAULT_ENCODING
-
-        # Normalize encoding
-        encoding = codecs.lookup(encoding).name
-        # Work around for incorrect inferion of utf-8-sig encoding
-        if encoding == "utf-8":
-            if buffer.startswith(codecs.BOM_UTF8):
-                encoding = "utf-8-sig"
-        # Use the BOM stripping name (without byte-order) for UTF-16 encodings
-        elif encoding == "utf-16-be":
-            if buffer.startswith(codecs.BOM_UTF16_BE):
-                encoding = "utf-16"
-        elif encoding == "utf-16-le":
-            if buffer.startswith(codecs.BOM_UTF16_LE):
-                encoding = "utf-16"
-
-        return encoding
+        pass
 
     # Dialect
 
@@ -261,40 +174,7 @@ class Detector:
         Returns:
             Dialect: dialect
         """
-        dialect = dialect or Dialect()
-        comment_filter = dialect.create_comment_filter()
-
-        # Infer header
-        widths = [len(cells) for cells in sample]
-        if (
-            widths
-            and not dialect.has_defined("header")
-            and not dialect.has_defined("header_rows")
-        ):
-            # This algorithm tries to find a header row
-            # that is close to average sample width or use default one
-            # We use it to eliminate initial rows that are comments/etc
-
-            # Get header rows
-            width = round(sum(widths) / len(widths))
-            drift = max(round(width * 0.1), 1)
-            match = list(range(width - drift, width + drift + 1))
-            header_rows = settings.DEFAULT_HEADER_ROWS.copy()
-            for row_number, cells in enumerate(sample, start=1):
-                if comment_filter:
-                    if not comment_filter(row_number, cells):
-                        continue
-                if len(cells) in match:
-                    header_rows = [row_number]
-                    break
-
-            # Set header rows
-            if not header_rows:
-                dialect.header = False
-            elif header_rows != settings.DEFAULT_HEADER_ROWS:
-                dialect.header_rows = header_rows
-
-        return dialect
+        pass
 
     # Schema
 
@@ -318,149 +198,14 @@ class Detector:
         Returns:
             Schema: schema
         """
-
-        # Create schema
-        if not schema:
-            schema = Schema(fields=[])
-
-            # Missing values
-            if self.field_missing_values != settings.DEFAULT_MISSING_VALUES:
-                schema.missing_values = self.field_missing_values  # type: ignore
-
-            # Prepare names
-            names = copy(self.field_names or labels or [])
-            names = list(map(lambda cell: cell.replace("\n", " ").strip(), names))
-            if not names:
-                if not fragment:
-                    return schema
-                names = [f"field{number}" for number in range(1, len(fragment[0]) + 1)]
-
-            # Handle name/empty
-            for index, name in enumerate(names):
-                names[index] = name or f"field{index + 1}"
-
-            # Deduplicate names
-            if len(names) != len(set(names)):
-                seen_names: List[str] = []
-                names = names.copy()
-                for index, name in enumerate(names):
-                    count = seen_names.count(name) + 1
-                    names[index] = "%s%s" % (name, count) if count > 1 else name
-                    seen_names.append(name)
-
-            # Handle type/empty
-            if self.field_type or not fragment:
-                type = self.field_type or settings.DEFAULT_FIELD_TYPE
-                schema.fields = []
-                for name in names:
-                    field = Field.from_descriptor({"name": name, "type": type})
-                    schema.add_field(field)
-                return schema
-
-            # Prepare runners
-            runners: List[List[Any]] = []
-            runner_fields: List[Field] = []  # we use shared fields
-            for candidate in field_candidates:
-                descriptor = candidate.copy()
-                descriptor["name"] = "shared"
-                field = Field.from_descriptor(descriptor)
-                if field.type == "number" and self.field_float_numbers:
-                    field.float_number = True  # type: ignore
-                elif field.type == "boolean":
-                    if self.field_true_values != settings.DEFAULT_TRUE_VALUES:
-                        field.true_values = self.field_true_values  # type: ignore
-                    if self.field_false_values != settings.DEFAULT_FALSE_VALUES:
-                        field.false_values = self.field_false_values  # type: ignore
-                runner_fields.append(field)
-            for index, name in enumerate(names):
-                runners.append([])
-                for field in runner_fields:
-                    runners[index].append({"field": field, "score": 0})
-
-            # Infer fields
-            fields = [None] * len(names)
-            max_score = [len(fragment)] * len(names)
-            threshold = len(fragment) * (self.field_confidence - 1)
-            for cells in fragment:
-                for index, name in enumerate(names):
-                    if fields[index] is not None:
-                        continue
-                    source = cells[index] if len(cells) > index else None
-                    is_field_missing_value = source in self.field_missing_values
-                    if is_field_missing_value:
-                        max_score[index] -= 1
-                    for runner in runners[index]:
-                        if runner["score"] < threshold:
-                            continue
-                        if not is_field_missing_value:
-                            _, notes = runner["field"].read_cell(source)
-                            runner["score"] += 1 if not notes else -1
-                        if max_score[index] > 0 and runner["score"] >= (
-                            max_score[index] * self.field_confidence
-                        ):
-                            field = runner["field"].to_copy()
-                            field.name = name
-                            field.schema = schema
-                            fields[index] = field
-                            break
-
-            # Fill/set fields
-            # For not inferred fields we use the "any" type field as a default
-            for index, name in enumerate(names):
-                if fields[index] is None:
-                    fields[index] = AnyField(name=name, schema=schema)  # type: ignore
-            schema.fields = fields  # type: ignore
-
-        # Sync schema
-        if self.schema_sync:
-            if labels:
-                case_sensitive = options["header_case"]
-
-                if not case_sensitive:
-                    labels = [label.lower() for label in labels]
-
-                if len(labels) != len(set(labels)):
-                    note = '"schema_sync" requires unique labels in the header'
-                    raise FrictionlessException(note)
-
-                mapped_fields = self.mapped_schema_fields_names(
-                    schema.fields,  # type: ignore
-                    case_sensitive,
-                )
-
-                self.rearrange_schema_fields_given_labels(
-                    mapped_fields,
-                    schema,
-                    labels,
-                )
-
-                self.add_missing_required_labels_to_schema_fields(
-                    mapped_fields, schema, labels, case_sensitive
-                )
-
-        # Patch schema
-        if self.schema_patch:
-            patch = deepcopy(self.schema_patch)
-            patch_fields = patch.pop("fields", {})
-            descriptor = schema.to_descriptor()
-            descriptor.update(patch)
-            for field_descriptor in descriptor.get("fields", []):
-                field_name = field_descriptor.get("name")
-                field_patch = patch_fields.get(field_name, {})  # type: ignore
-                field_descriptor.update(field_patch)
-            schema = Schema.from_descriptor(descriptor)
-
-        return schema
+        pass
 
     @staticmethod
     def mapped_schema_fields_names(
         fields: List[Field], case_sensitive: bool
     ) -> Dict[str, Field]:
         """Create a dictionnary to map field names with schema fields"""
-        if case_sensitive:
-            return {field.name: field for field in fields}
-        else:
-            return {field.name.lower(): field for field in fields}
+        pass
 
     @staticmethod
     def rearrange_schema_fields_given_labels(
@@ -470,12 +215,7 @@ class Detector:
     ):
         """Rearrange fields according to the order of labels. All fields
         missing from labels are dropped"""
-        schema.clear_fields()
-
-        for name in labels:
-            default_field = Field.from_descriptor({"name": name, "type": "any"})
-            field = fields_mapping.get(name, default_field)
-            schema.add_field(field)
+        pass
 
     def add_missing_required_labels_to_schema_fields(
         self,
@@ -487,12 +227,7 @@ class Detector:
         """This method aims to add missing required labels and
         primary key field not in labels to schema fields.
         """
-        for name, field in fields_mapping.items():
-            if (
-                self.field_is_required(field, schema, case_sensitive)
-                and name not in labels
-            ):
-                schema.add_field(field)
+        pass
 
     @staticmethod
     def field_is_required(
@@ -500,8 +235,4 @@ class Detector:
         schema: Schema,
         case_sensitive: bool,
     ) -> bool:
-        if case_sensitive:
-            return field.required or field.name in schema.primary_key
-        else:
-            lower_primary_key = [pk.lower() for pk in schema.primary_key]
-            return field.required or field.name.lower() in lower_primary_key
+        pass

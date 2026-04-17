@@ -18,18 +18,7 @@ class ExcelAdapter(Adapter):
     # Read
 
     def read_package(self) -> Package:
-        package = Package()
-        with self.resource:
-            book = platform.openpyxl.load_workbook(self.resource.byte_stream)
-            for name in book.sheetnames:
-                resource = Resource(
-                    name=slugify(name),
-                    path=self.resource.normpath,
-                    control=ExcelControl(sheet=name),
-                )
-                package.add_resource(resource)
-        package.deduplicate_resoures()
-        return package
+        pass
 
     # Write
 

@@ -105,28 +105,12 @@ class Metadata:
     @property
     def description_html(self) -> str:
         """Description in HTML"""
-        description = getattr(self, "description", "")
-        try:
-            html = platform.marko.convert(description)
-            html = html.replace("\n", "")
-            return html
-        except Exception:
-            return ""
+        pass
 
     @property
     def description_text(self) -> str:
         """Description in Text"""
-
-        class HTMLFilter(platform.html_parser.HTMLParser):
-            text = ""
-
-            def handle_data(self, data: str):
-                self.text += data
-                self.text += " "
-
-        parser = HTMLFilter()
-        parser.feed(self.description_html)
-        return parser.text.strip()
+        pass
 
     # Defined
 
@@ -149,7 +133,7 @@ class Metadata:
         return defined
 
     def add_defined(self, name: str) -> None:
-        self.metadata_assigned.add(name)
+        pass
 
     def has_defined(self, name: str) -> bool:
         """Whether a property has been defined explicitely"""
@@ -158,10 +142,7 @@ class Metadata:
     def get_defined(self, name: str, *, default: Any = None) -> Any:
         """Retrieve the value of a property if it has been explicitely
         assigned, or return a default value otherwise"""
-        if self.has_defined(name):
-            return getattr(self, name)
-
-        return default
+        pass
 
     def set_not_defined(self, name: str, value: Any, *, distinct: bool = False) -> None:
         """If no property with "name" has already been assigned, then assign
@@ -192,15 +173,7 @@ class Metadata:
         To do so, it tries to convert a descriptor into a class instance, and
         report errors it has encountered (if any)
         """
-        errors = []
-        timer = helpers.Timer()
-        try:
-            cls.from_descriptor(descriptor, basepath=basepath)
-        except FrictionlessException as exception:
-            errors = exception.reasons if exception.reasons else [exception.error]
-        return platform.frictionless.Report.from_validation(
-            time=timer.time, errors=errors
-        )
+        pass
 
     # Convert
 
@@ -340,15 +313,7 @@ class Metadata:
             path (str): target path
             table (bool): if true converts markdown to tabular format
         """
-        Error = self.metadata_Error or platform.frictionless_errors.MetadataError
-        mapper = platform.frictionless_formats.markdown.MarkdownMapper()
-        text = mapper.write_metadata(self, table=table)  # type: ignore
-        if path:
-            try:
-                helpers.write_file(path, text)
-            except Exception as exc:
-                raise FrictionlessException(Error(note=str(exc))) from exc
-        return text
+        pass
 
     # Metadata
 

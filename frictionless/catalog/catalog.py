@@ -75,61 +75,34 @@ class Catalog(Metadata, metaclass=Factory):
     @property
     def dataset_names(self) -> List[str]:
         """Return names of datasets"""
-        return [dataset.name for dataset in self.datasets]
+        pass
 
     def add_dataset(self, dataset: Union[Dataset, str]) -> Dataset:
         """Add new dataset to the catalog"""
-        if isinstance(dataset, str):
-            dataset = Dataset.from_descriptor(dataset, basepath=self.basepath)
-        self.datasets.append(dataset)
-        dataset.catalog = self
-        return dataset
+        pass
 
     def has_dataset(self, name: str) -> bool:
         """Check if a dataset is present"""
-        for dataset in self.datasets:
-            if dataset.name == name:
-                return True
-        return False
+        pass
 
     def get_dataset(self, name: str) -> Dataset:
         """Get dataset by name"""
-        for dataset in self.datasets:
-            if dataset.name == name:
-                return dataset
-        error = errors.CatalogError(note=f'dataset "{name}" does not exist')
-        raise FrictionlessException(error)
+        pass
 
     def set_dataset(self, dataset: Dataset) -> Optional[Dataset]:
         """Set dataset by name"""
-        assert dataset.name
-        if self.has_dataset(dataset.name):
-            prev_dataset = self.get_dataset(dataset.name)
-            index = self.datasets.index(prev_dataset)
-            self.datasets[index] = dataset
-            dataset.dataset = self
-            return prev_dataset
-        self.add_dataset(dataset)
+        pass
 
     def remove_dataset(self, name: str) -> Dataset:
         """Remove dataset by name"""
-        dataset = self.get_dataset(name)
-        self.datasets.remove(dataset)
-        return dataset
+        pass
 
     def clear_datasets(self):
         """Remove all the datasets"""
-        self.datasets = []
+        pass
 
     def deduplicate_datasets(self):
-        if len(self.dataset_names) != len(set(self.dataset_names)):
-            seen_names: List[str] = []
-            for index, dataset in enumerate(self.datasets):
-                name = dataset.name
-                count = seen_names.count(name) + 1
-                if count > 1:
-                    self.datasets[index].name = "%s%s" % (name, count)
-                seen_names.append(name)
+        pass
 
     # Infer
 
@@ -150,8 +123,7 @@ class Catalog(Metadata, metaclass=Factory):
         If some of underlaying metadata is provided as a string
         it will replace it by the metadata object
         """
-        for dataset in self.datasets:
-            dataset.dereference()
+        pass
 
     # Convert
 

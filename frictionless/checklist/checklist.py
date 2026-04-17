@@ -66,66 +66,37 @@ class Checklist(Metadata):
 
     @property
     def check_types(self) -> List[str]:
-        return [check.type for check in self.checks]
+        pass
 
     @property
     def scope(self) -> List[str]:
-        scope: List[str] = []
-        basics: List[Check] = [baseline()]
-        for check in basics + self.checks:
-            for Error in check.Errors:
-                if self.pick_errors:
-                    if Error.type not in self.pick_errors and not set(
-                        self.pick_errors
-                    ).intersection(Error.tags):
-                        continue
-                if self.skip_errors:
-                    if Error.type in self.skip_errors or set(
-                        self.skip_errors
-                    ).intersection(Error.tags):
-                        continue
-                scope.append(Error.type)
-        return scope
+        pass
 
     # Checks
 
     def add_check(self, check: Check) -> None:
         """Add new check to the schema"""
-        self.checks.append(check)
+        pass
 
     def has_check(self, type: str) -> bool:
         """Check if a check is present"""
-        for check in self.checks:
-            if check.type == type:
-                return True
-        return False
+        pass
 
     def get_check(self, type: str) -> Check:
         """Get check by type"""
-        for check in self.checks:
-            if check.type == type:
-                return check
-        error = errors.ChecklistError(note=f'check "{type}" does not exist')
-        raise FrictionlessException(error)
+        pass
 
     def set_check(self, check: Check) -> Optional[Check]:
         """Set check by type"""
-        if self.has_check(check.type):
-            prev_check = self.get_check(check.type)
-            index = self.checks.index(prev_check)
-            self.checks[index] = check
-            return prev_check
-        self.add_check(check)
+        pass
 
     def remove_check(self, type: str) -> Check:
         """Remove check by type"""
-        check = self.get_check(type)
-        self.checks.remove(check)
-        return check
+        pass
 
     def clear_checks(self) -> None:
         """Remove all the checks"""
-        self.checks = []
+        pass
 
     # Connect
 

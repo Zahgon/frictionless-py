@@ -29,34 +29,4 @@ def console_explore(
     Please read the commands reference:
     - https://www.visidata.org/man/
     """
-    console = Console()
-
-    # Setup system
-    if trusted:
-        system.trusted = trusted
-    if standards:
-        system.standards = standards  # type: ignore
-
-    # Create source
-    source = helpers.create_source(source, path=path)
-    if not source and not path:
-        note = 'Providing "source" or "path" is required'
-        helpers.print_error(console, note=note)
-        raise typer.Exit(code=1)
-
-    # Get paths
-    try:
-        resource = Resource(
-            source=helpers.create_source(source),
-            name=name,
-            path=path,
-            datatype=type,
-        )
-        resources = resource.list(name=name)
-        paths = [resource.normpath for resource in resources if resource.normpath]
-    except Exception as exception:
-        helpers.print_exception(console, debug=debug, exception=exception)
-        raise typer.Exit(code=1)
-
-    # Enter editor
-    os.system(f"vd {' '.join(paths)}")
+    pass

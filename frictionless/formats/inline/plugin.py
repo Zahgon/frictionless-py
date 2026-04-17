@@ -22,22 +22,7 @@ class InlinePlugin(Plugin):
             return InlineParser(resource)
 
     def detect_resource(self, resource: Resource):
-        if resource.data is not None:
-            if not hasattr(resource.data, "read"):
-                types: Any = (list, typing.Iterator, typing.Generator)
-                if callable(resource.data) or isinstance(resource.data, types):
-                    resource.format = resource.format or "inline"
-                    resource.datatype = resource.datatype or "table"
-                elif isinstance(resource.data, dict):
-                    resource.format = resource.format or "inline"
-                    resource.datatype = (
-                        resource.datatype
-                        or Detector.detect_metadata_type(resource.data)
-                        or "json"
-                    )
-        # TODO: remove
-        elif resource.format == "inline":
-            resource.data = []
+        pass
 
     def select_control_class(self, type: Optional[str] = None):
         if type == "inline":

@@ -58,13 +58,7 @@ class NumberField(Field):
         if set(properties).intersection(self.list_defined()):
 
             def processor_function(cell: Any):
-                if pattern:
-                    cell = pattern.sub("", cell)
-                cell = cell.replace(self.group_char, "")
-                if self.decimal_char != "." and "." in cell:
-                    return None
-                cell = cell.replace(self.decimal_char, ".")
-                return cell
+                pass
 
             processor = processor_function
 

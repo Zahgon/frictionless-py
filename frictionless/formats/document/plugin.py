@@ -15,6 +15,4 @@ class DocumentPlugin(Plugin):
     # Hooks
 
     def detect_resource(self, resource: Resource):
-        if resource.format in settings.FORMATS:
-            resource.datatype = resource.datatype or "document"
-            resource.mediatype = resource.mediatype or f"application/{resource.format}"
+        pass

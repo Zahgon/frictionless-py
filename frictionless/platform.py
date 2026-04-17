@@ -9,15 +9,7 @@ def extras(*, name: str):
     """Extra dependency decorator"""
 
     def outer(func: Callable[..., Any]):
-        def inner(*args: Any, **kwargs: Any):
-            try:
-                return func(*args, **kwargs)
-            except Exception:
-                module = import_module("frictionless.exception")
-                note = f'Please install "frictionless[{name}]"'
-                raise module.FrictionlessException(note)
-
-        return inner
+        pass
 
     return outer
 
@@ -40,381 +32,265 @@ class Platform:
 
     @cached_property
     def bz2(self):
-        import bz2
-
-        return bz2
+        pass
 
     @cached_property
     def chardet(self):
-        import chardet
-
-        return chardet
+        pass
 
     @cached_property
     def dateutil_parser(self):
-        import dateutil.parser
-
-        return dateutil.parser
+        pass
 
     @cached_property
     def frictionless(self):
-        import frictionless
-
-        return frictionless
+        pass
 
     @cached_property
     def frictionless_checks(self):
-        import frictionless.checks
-
-        return frictionless.checks
+        pass
 
     @cached_property
     def frictionless_errors(self):
-        import frictionless.errors
-
-        return frictionless.errors
+        pass
 
     @cached_property
     def frictionless_fields(self):
-        import frictionless.fields
-
-        return frictionless.fields
+        pass
 
     @cached_property
     def frictionless_formats(self):
-        import frictionless.formats
-
-        return frictionless.formats
+        pass
 
     @cached_property
     def frictionless_portals(self):
-        import frictionless.portals
-
-        return frictionless.portals
+        pass
 
     @cached_property
     def frictionless_resources(self):
-        import frictionless.resources
-
-        return frictionless.resources
+        pass
 
     @cached_property
     def frictionless_schemes(self):
-        import frictionless.schemes
-
-        return frictionless.schemes
+        pass
 
     @cached_property
     def frictionless_steps(self):
-        import frictionless.steps
-
-        return frictionless.steps
+        pass
 
     @cached_property
     def gzip(self):
-        import gzip
-
-        return gzip
+        pass
 
     @cached_property
     def html_parser(self):
-        import html.parser
-
-        return html.parser
+        pass
 
     @cached_property
     def isodate(self):
-        import isodate  # type: ignore
-
-        return isodate
+        pass
 
     @cached_property
     def jinja2(self):
-        import jinja2
-
-        return jinja2
+        pass
 
     @cached_property
     def jinja2_filters(self):
-        import jinja2.filters
-
-        return jinja2.filters
+        pass
 
     @cached_property
     def jsonschema(self):
-        import jsonschema
-
-        return jsonschema
+        pass
 
     @cached_property
     def jsonschema_validators(self):
-        import jsonschema.validators
-
-        return jsonschema.validators
+        pass
 
     @cached_property
     def lzma(self):
-        import lzma
-
-        return lzma
+        pass
 
     @cached_property
     def marko(self):
-        import marko
-
-        return marko
+        pass
 
     @cached_property
     def marko_ext_gfm(self):
-        import marko.ext.gfm
-
-        return marko.ext.gfm
+        pass
 
     @cached_property
     def petl(self):
-        import petl  # type: ignore
-
-        return petl
+        pass
 
     @cached_property
     def psycopg(self):
-        import psycopg
-
-        return psycopg
+        pass
 
     @cached_property
     def requests(self):
-        import requests
-
-        return requests
+        pass
 
     @cached_property
     def requests_utils(self):
-        import requests.utils
-
-        return requests.utils
+        pass
 
     @cached_property
     def rfc3986(self):
-        import rfc3986  # type: ignore
-
-        return rfc3986
+        pass
 
     @cached_property
     def validators(self):
-        import validators  # type: ignore
-
-        return validators
+        pass
 
     @cached_property
     def yaml(self):
-        import yaml
-
-        return yaml
+        pass
 
     @cached_property
     def zipfile(self):
-        import zipfile
-
-        return zipfile
+        pass
 
     # Extras
 
     @cached_property
     @extras(name="aws")
     def boto3(self):
-        import boto3  # type: ignore
-
-        return boto3
+        pass
 
     @cached_property
     @extras(name="ckan")
     def frictionless_ckan_mapper_ckan_to_frictionless(self):
-        import frictionless_ckan_mapper.ckan_to_frictionless  # type: ignore
-
-        return frictionless_ckan_mapper.ckan_to_frictionless
+        pass
 
     @cached_property
     @extras(name="ckan")
     def frictionless_ckan_mapper_frictionless_to_ckan(self):
-        import frictionless_ckan_mapper.frictionless_to_ckan  # type: ignore
-
-        return frictionless_ckan_mapper.frictionless_to_ckan
+        pass
 
     @cached_property
     @extras(name="excel")
     def xlrd(self):
-        import xlrd  # type: ignore
-
-        return xlrd
+        pass
 
     @cached_property
     @extras(name="excel")
     def xlwt(self):
-        import xlwt  # type: ignore
-
-        return xlwt
+        pass
 
     @cached_property
     @extras(name="excel")
     def openpyxl(self):
-        import openpyxl
-
-        return openpyxl
+        pass
 
     @cached_property
     @extras(name="excel")
     def tableschema_to_template(self):
-        import tableschema_to_template  # type: ignore
-
-        return tableschema_to_template
+        pass
 
     @cached_property
     @extras(name="json")
     def ijson(self):
-        import ijson  # type: ignore
-
-        return ijson
+        pass
 
     @cached_property
     @extras(name="json")
     def jsonlines(self):
-        import jsonlines
-
-        return jsonlines
+        pass
 
     @cached_property
     @extras(name="github")
     def github(self):
-        import github
-
-        return github
+        pass
 
     @cached_property
     @extras(name="gsheets")
     def pygsheets(self):
-        import pygsheets  # type: ignore
-
-        return pygsheets
+        pass
 
     @cached_property
     @extras(name="html")
     def pyquery(self):
-        import pyquery  # type: ignore
-
-        return pyquery
+        pass
 
     @cached_property
     @extras(name="ods")
     def ezodf(self):
-        import ezodf  # type: ignore
-
-        return ezodf
+        pass
 
     @cached_property
     @extras(name="markdown")
     def livemark(self):
-        import livemark  # type: ignore
-
-        return livemark
+        pass
 
     @cached_property
     @extras(name="pandas")
     def pandas(self):
-        import pandas  # type: ignore
-
-        return pandas
+        pass
 
     @cached_property
     @extras(name="pandas")
     def pandas_core_dtypes_api(self):
-        import pandas.core.dtypes.api  # type: ignore
-
-        return pandas.core.dtypes.api
+        pass
 
     @cached_property
     @extras(name="pandas")
     def numpy(self):
-        import numpy
-
-        return numpy
+        pass
 
     @cached_property
     @extras(name="parquet")
     def pyarrow_parquet(self):
-        import pyarrow.parquet  # type: ignore
-
-        return pyarrow.parquet
+        pass
 
     @cached_property
     @extras(name="spss")
     def sav_reader_writer(self):
-        import savReaderWriter  # type: ignore
-
-        return savReaderWriter
+        pass
 
     @cached_property
     @extras(name="sql")
     def sqlalchemy(self):
-        import sqlalchemy
-
-        return sqlalchemy
+        pass
 
     @cached_property
     @extras(name="sql")
     def sqlalchemy_exc(self):
-        import sqlalchemy.exc
-
-        return sqlalchemy.exc
+        pass
 
     @cached_property
     @extras(name="sql")
     def sqlalchemy_schema(self):
-        import sqlalchemy.schema
-
-        return sqlalchemy.schema
+        pass
 
     @cached_property
     @extras(name="sql")
     def sqlalchemy_dialects(self):
-        import sqlalchemy.dialects
-
-        return sqlalchemy.dialects
+        pass
 
     @cached_property
     @extras(name="sql")
     def sqlalchemy_dialects_postgresql(self):
-        import sqlalchemy.dialects.postgresql
-
-        return sqlalchemy.dialects.postgresql
+        pass
 
     @cached_property
     @extras(name="sql")
     def sqlalchemy_dialects_mysql(self):
-        import sqlalchemy.dialects.mysql
-
-        return sqlalchemy.dialects.mysql
+        pass
 
     @cached_property
     @extras(name="zenodo")
     def pyzenodo3(self):
-        import pyzenodo3  # type: ignore
-
-        return pyzenodo3
+        pass
 
     @cached_property
     @extras(name="zenodo")
     def pyzenodo3_upload(self):
-        import pyzenodo3.upload  # type: ignore
-
-        return pyzenodo3.upload
+        pass
 
     @cached_property
     @extras(name="wkt")
     def wkt(self):
-        import frictionless.vendors.wkt
-
-        return frictionless.vendors.wkt
+        pass
 
 
 platform = Platform()

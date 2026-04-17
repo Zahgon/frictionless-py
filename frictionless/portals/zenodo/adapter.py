@@ -28,24 +28,7 @@ class ZenodoAdapter(Adapter):
     # Read
 
     def read_package(self) -> Package:
-        client = platform.pyzenodo3.Zenodo(api_key=self.control.apikey)  # type: ignore
-        if not self.control.record:
-            note = "Record is required."
-            raise FrictionlessException(note)
-        assert self.control.formats
-        package = Package()
-        try:
-            dataset = client.get_record(self.control.record)
-            if dataset:
-                name = self.control.name or dataset.data["metadata"]["title"]
-                package = get_package(dataset, name, self.control.formats)
-        except Exception as exception:
-            note = "Zenodo API error" + repr(exception)
-            raise FrictionlessException(note)
-        if isinstance(package, Package) and package.resources:  # type: ignore
-            return package
-        note = "Package/s not found"
-        raise FrictionlessException(note)
+        pass
 
     # Write
 
@@ -147,93 +130,8 @@ class ZenodoAdapter(Adapter):
     # Experimental
 
     def read_catalog(self) -> Catalog:
-        packages: List[Union[Package, str]] = []
-        options: Dict[str, Any] = {}
-
-        # Single record
-        if self.control.record:
-            packages.append(self.read_package())
-            return Catalog(
-                datasets=[
-                    Dataset(name=package.name, package=package)  # type: ignore
-                    for package in packages
-                ]
-            )
-
-        # DOI
-        assert self.control.formats
-        client = platform.pyzenodo3.Zenodo(api_key=self.control.apikey)  # type: ignore
-        if self.control.doi:
-            dataset = client.find_record_by_doi(self.control.doi)
-            name = self.control.name or dataset.data["metadata"]["title"]
-            package = get_package(dataset, name, self.control.formats)
-            if isinstance(package, Package) and package.resources:  # type: ignore
-                packages.append(package)
-            return Catalog(
-                datasets=[
-                    Dataset(name=package.name, package=package)  # type: ignore
-                    for package in packages
-                ]
-            )
-
-        # Search
-        if self.control.search:
-            search = self.control.search.replace(
-                "/", " "
-            )  # zenodo can't handle '/' in search query
-            options["q"] = search
-        options["status"] = self.control.status
-        options["sort"] = self.control.sort
-        options["page"] = self.control.page
-        options["size"] = self.control.size
-        options["all_versions"] = self.control.all_versions
-        options["communities"] = self.control.communities
-        options["type"] = self.control.rtype
-        options["subtype"] = self.control.subtype
-        options["bounds"] = self.control.bounds
-        options["custom"] = self.control.rcustom
-        options = {key: value for key, value in options.items() if value}
-        try:
-            records = client._get_records(options)
-            for dataset in records:
-                name = self.control.name or dataset.data["metadata"]["title"]
-                package = get_package(dataset, name, self.control.formats)
-                if isinstance(package, Package) and package.resources:  # type: ignore
-                    packages.append(package)
-        except Exception as exception:
-            note = "Zenodo API error" + repr(exception)
-            raise FrictionlessException(note)
-        if packages:
-            return Catalog(
-                datasets=[
-                    Dataset(name=package.name, package=package)  # type: ignore
-                    for package in packages
-                ]
-            )
-        note = "Package/s not found"
-        raise FrictionlessException(note)
+        pass
 
 
 def get_package(record: Record, title: str, formats: List[str]) -> Package:  # type: ignore
-    package = Package(title=title)
-    package.title = title
-    for file in record.data["files"]:  # type: ignore
-        path = file["links"]["self"]  # type: ignore
-        is_resource_file = any(path.endswith(ext) for ext in formats)  # type: ignore
-        if path.endswith(("datapackage.json")):  # type: ignore
-            return Package.from_descriptor(path, title=title)  # type: ignore
-        if path.endswith("zip") and not is_resource_file:  # type: ignore
-            try:
-                package = Package(path)  # type: ignore
-                package.title = title
-                return package
-            except FrictionlessException as exception:
-                # Skips package descriptor not found exception
-                # and continues reading files.
-                if "[Errno 2] No such file or directory" not in str(exception):
-                    raise exception
-        if is_resource_file:
-            package.basepath = f'https://zenodo.org/api/files/{file["bucket"]}'
-            resource = Resource(path=file["key"])  # type: ignore
-            package.add_resource(resource)
-    return package
+    pass

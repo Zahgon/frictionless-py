@@ -12,13 +12,7 @@ class LocalLoader(Loader):
     # Read
 
     def read_byte_stream_create(self):
-        assert self.resource.normpath
-        scheme = "file://"
-        path = self.resource.normpath
-        if path.startswith(scheme):
-            path = path.replace(scheme, "", 1)
-        byte_stream = io.open(path, "rb")
-        return byte_stream
+        pass
 
     # Write
 

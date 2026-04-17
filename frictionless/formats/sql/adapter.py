@@ -51,48 +51,14 @@ class SqlAdapter(Adapter):
     # Read
 
     def read_package(self) -> Package:
-        package = Package(resources=[])
-        for table in self.metadata.sorted_tables:
-            name = str(table.name)
-            control = SqlControl(table=name)
-            path = self.engine.url.render_as_string(hide_password=False)
-            schema = self.mapper.read_schema(table)
-            resource = Resource(path, name=name, schema=schema, control=control)
-            package.add_resource(resource)
-        return package
+        pass
 
     def read_schema(self, table_name: str) -> Schema:
         table = self.metadata.tables[table_name]
         return self.mapper.read_schema(table, with_metadata=self.control.with_metadata)
 
     def read_cell_stream(self, control: SqlControl) -> Generator[List[Any], None, None]:
-        sa = platform.sqlalchemy
-        table = self.metadata.tables[control.table]  # type: ignore
-        with self.engine.begin() as conn:
-            # Prepare columns
-            columns = table.c
-            if self.control.with_metadata:
-                columns = [
-                    column
-                    for column in table.c
-                    if column.name not in settings.METADATA_IDENTIFIERS
-                ]
-
-            # Prepare query
-            # Streaming could be not working for some backends:
-            # http://docs.sqlalchemy.org/en/latest/core/connections.html
-            query = sa.select(*columns).execution_options(stream_results=True)
-            if control.order_by:
-                query = query.order_by(sa.text(control.order_by))
-            if control.where:
-                query = query.where(sa.text(control.where))
-
-            # Stream cells
-            result = conn.execute(query)
-            yield list(result.keys())
-            for item in result:
-                cells = list(item)
-                yield cells
+        pass
 
     # Write
 
@@ -170,11 +136,7 @@ class SqlAdapter(Adapter):
         with self.engine.begin() as conn:
             # Write row
             def process_row(row: Row):
-                buffer.append(self.mapper.write_row(row, with_metadata=True))
-                if len(buffer) > settings.BUFFER_SIZE:
-                    conn.execute(sa.insert(table), buffer)
-                    buffer.clear()
-                on_row(row) if on_row else None
+                pass
 
             # Validate/iterate
             buffer: List[Dict[str, Any]] = []
@@ -190,5 +152,4 @@ class SqlAdapter(Adapter):
 
 
 def regexp(expr: str, item: str):
-    reg = re.compile(expr)
-    return reg.search(item) is not None
+    pass

@@ -27,14 +27,7 @@ class PandasPlugin(Plugin):
             return PandasParser(resource)
 
     def detect_resource(self, resource: Resource):
-        if resource.data is not None:
-            if helpers.is_type(resource.data, "DataFrame"):
-                resource.format = resource.format or "pandas"
-        if resource.format == "pandas":
-            if resource.data is None:
-                resource.data = platform.pandas.DataFrame()
-            resource.datatype = resource.datatype or "table"
-            resource.mediatype = resource.mediatype or "application/pandas"
+        pass
 
     def select_control_class(self, type: Optional[str] = None):
         if type == "pandas":

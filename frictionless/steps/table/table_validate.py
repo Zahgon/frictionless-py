@@ -29,14 +29,7 @@ class table_validate(Step):
 
         # Data
         def data():  # type: ignore
-            with current:
-                if not current.header.valid:  # type: ignore
-                    raise FrictionlessException(error=current.header.errors[0])  # type: ignore
-                yield current.header  # type: ignore
-                for row in current.row_stream:  # type: ignore
-                    if not row.valid:  # type: ignore
-                        raise FrictionlessException(error=row.errors[0])  # type: ignore
-                    yield row
+            pass
 
         # Meta
         resource.data = data

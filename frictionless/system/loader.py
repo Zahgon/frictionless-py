@@ -66,9 +66,7 @@ class Loader:
         Returns:
             Loader: buffer
         """
-        if self.__buffer is None:
-            raise FrictionlessException("loader is not open")
-        return self.__buffer
+        pass
 
     @property
     def byte_stream(self) -> types.IByteStream:
@@ -79,9 +77,7 @@ class Loader:
         Returns:
             io.ByteStream: resource byte stream
         """
-        if self.__byte_stream is None:
-            raise FrictionlessException("loader is not open")
-        return self.__byte_stream
+        pass
 
     @property
     def text_stream(self) -> types.ITextStream:
@@ -92,23 +88,13 @@ class Loader:
         Returns:
             io.TextStream: resource text stream
         """
-        if self.closed:
-            raise FrictionlessException("loader is not open")
-        if not self.__text_stream:
-            self.__text_stream = self.read_text_stream()
-        return self.__text_stream
+        pass
 
     # Open/Close
 
     def open(self):
         """Open the loader as "io.open" does"""
-        self.close()
-        try:
-            self.__byte_stream = self.read_byte_stream()
-            return self
-        except Exception:
-            self.close()
-            raise
+        pass
 
     def close(self) -> None:
         """Close the loader as "filelike.close" does"""
@@ -123,7 +109,7 @@ class Loader:
         Returns:
             bool: if closed
         """
-        return self.__byte_stream is None
+        pass
 
     # Read
 
@@ -133,23 +119,7 @@ class Loader:
         Returns:
             io.ByteStream: resource byte stream
         """
-        try:
-            byte_stream = self.read_byte_stream_create()
-            byte_stream = self.read_byte_stream_process(byte_stream)
-            byte_stream = self.read_byte_stream_decompress(byte_stream)  # type: ignore
-            buffer = self.read_byte_stream_buffer(byte_stream)
-            self.read_byte_stream_analyze(buffer)
-            self.__buffer = buffer
-        except (LookupError, UnicodeDecodeError) as exception:
-            error = errors.EncodingError(note=str(exception))
-            raise FrictionlessException(error) from exception
-        except (platform.zipfile.BadZipFile, platform.gzip.BadGzipFile) as exception:
-            error = errors.CompressionError(note=str(exception))
-            raise FrictionlessException(error)
-        except IOError as exception:
-            error = errors.SchemeError(note=str(exception))
-            raise FrictionlessException(error)
-        return byte_stream
+        pass
 
     def read_byte_stream_create(self) -> types.IByteStream:
         """Create bytes stream
@@ -171,7 +141,7 @@ class Loader:
         Returns:
             io.ByteStream: resource byte stream
         """
-        return ByteStreamWithStatsHandling(byte_stream, resource=self.resource)
+        pass
 
     # TODO: move to formats
     def read_byte_stream_decompress(
@@ -185,77 +155,7 @@ class Loader:
         Returns:
             io.ByteStream: resource byte stream
         """
-
-        # No compression
-        if self.resource.multipart or not self.resource.compression:
-            return byte_stream
-
-        # ZIP compression
-        if self.resource.compression == "zip":
-            # Remote
-            if self.remote:
-                self.remote = False
-                target = tempfile.NamedTemporaryFile()
-                shutil.copyfileobj(byte_stream, target)
-                target.seek(0)
-                byte_stream = target  # type: ignore
-            # Stats
-            else:
-                bytes = True
-                while bytes:
-                    bytes = byte_stream.read1(io.DEFAULT_BUFFER_SIZE)  # type: ignore
-                byte_stream.seek(0)
-            # Unzip
-            with platform.zipfile.ZipFile(byte_stream) as archive:
-                name = self.resource.innerpath or archive.namelist()[0]
-                if not name:
-                    error = errors.Error(note="the archive is empty")
-                    raise FrictionlessException(error)
-                # TODO: enable typing when resource.innerpath is fixed
-                with archive.open(name) as file:  # type: ignore
-                    target = tempfile.NamedTemporaryFile()
-                    shutil.copyfileobj(file, target)
-                    target.seek(0)
-                byte_stream = target  # type: ignore
-                self.resource.innerpath = name
-            return byte_stream
-
-        # GZip compression
-        if self.resource.compression == "gz":
-            # Stats
-            if not self.remote:
-                bytes = True
-                while bytes:
-                    bytes = byte_stream.read1(io.DEFAULT_BUFFER_SIZE)  # type: ignore
-                byte_stream.seek(0)
-            byte_stream = platform.gzip.open(byte_stream)  # type: ignore
-            return byte_stream
-
-        # bzip2 compression
-        if self.resource.compression == "bz2":
-            # Stats
-            if not self.remote:
-                bytes = True
-                while bytes:
-                    bytes = byte_stream.read1(io.DEFAULT_BUFFER_SIZE)  # type: ignore
-                byte_stream.seek(0)
-            byte_stream = platform.bz2.open(byte_stream)  # type: ignore
-            return byte_stream
-
-        # XZ compression
-        if self.resource.compression == "xz":
-            # Stats
-            if not self.remote:
-                bytes = True
-                while bytes:
-                    bytes = byte_stream.read1(io.DEFAULT_BUFFER_SIZE)  # type: ignore
-                byte_stream.seek(0)
-            byte_stream = platform.lzma.open(byte_stream)  # type: ignore
-            return byte_stream
-
-        # Not supported compression
-        note = f'compression "{self.resource.compression}" is not supported'
-        raise FrictionlessException(errors.CompressionError(note=note))
+        pass
 
     def read_byte_stream_buffer(self, byte_stream: types.IByteStream):
         """Buffer byte stream
@@ -266,10 +166,7 @@ class Loader:
         Returns:
             bytes: buffer
         """
-        buffer = byte_stream.read(self.resource.detector.buffer_size)
-        buffer = buffer[: self.resource.detector.buffer_size]
-        byte_stream.seek(0)
-        return buffer
+        pass
 
     def read_byte_stream_analyze(self, buffer: bytes):
         """Detect metadta using sample
@@ -277,9 +174,7 @@ class Loader:
         Parameters:
             buffer (bytes): byte buffer
         """
-        self.resource.encoding = self.resource.detector.detect_encoding(
-            buffer, encoding=self.resource.get_defined("encoding")
-        )
+        pass
 
     def read_text_stream(self):
         """Read text stream
@@ -287,10 +182,7 @@ class Loader:
         Returns:
             io.TextStream: resource text stream
         """
-        # NOTE: this solution might be improved using parser properties
-        newline = "" if self.resource.format == "csv" else None
-        # TODO: enable typing when resource.encodign is fixed
-        return io.TextIOWrapper(self.byte_stream, self.resource.encoding, newline=newline)  # type: ignore
+        pass
 
     # Write
 
@@ -354,7 +246,7 @@ class ByteStreamWithStatsHandling:
 
     @property
     def closed(self):
-        return self.__byte_stream.closed
+        pass
 
     def read1(self, size: Optional[int] = -1):
         size = -1 if size is None else size

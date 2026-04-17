@@ -41,12 +41,7 @@ class SqlPlugin(Plugin):
             return SqlParser(resource)
 
     def detect_resource(self, resource: Resource):
-        if resource.scheme:
-            for prefix in settings.SCHEME_PREFIXES:
-                if resource.scheme.startswith(prefix):
-                    resource.format = "sql"
-                    resource.datatype = "table"
-                    return
+        pass
 
     def select_control_class(self, type: Optional[str] = None):
         if type == "sql":

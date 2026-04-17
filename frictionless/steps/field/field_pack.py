@@ -83,31 +83,7 @@ def iterpack(
     """Combines multiple columns as array
     Code partially referenced from https://github.com/petl-developers/petl/blob/master/petl/transform/unpacks.py#L64
     """
-    it = iter(source)
-
-    hdr = next(it)
-    field_indexes: List[int] = list()
-    flds = list(map(text_type, hdr))
-
-    # determine output fields
-    outhdr = list(flds)
-    for field in from_names:
-        field_index = flds.index(field)
-        if not preserve:
-            outhdr.remove(field)
-        field_indexes.append(field_index)
-    outhdr.extend([name])
-    yield tuple(outhdr)
-
-    # construct the output data
-    for row in it:
-        value = [v for i, v in enumerate(row) if i in field_indexes]
-        if preserve:
-            out_row = list(row)
-        else:
-            out_row = [v for i, v in enumerate(row) if i not in field_indexes]
-        out_row.extend([value])
-        yield tuple(out_row)
+    pass
 
 
 def iterpackdict(
@@ -117,30 +93,4 @@ def iterpackdict(
     preserve: bool = False,
 ) -> Iterator[Any]:
     """Combines multiple columns as JSON Object"""
-    it = iter(source)
-
-    hdr = next(it)
-    field_indexes: List[int] = list()
-    flds = list(map(text_type, hdr))
-
-    # determine output fields
-    outhdr = list(flds)
-    for field in from_names:
-        field_index = flds.index(field)
-        if not preserve:
-            outhdr.remove(field)
-        field_indexes.append(field_index)
-    outhdr.extend([name])
-    yield tuple(outhdr)
-
-    # construct the output data
-    for row in it:
-        value = dict(
-            (from_names[i - 1], v) for i, v in enumerate(row) if i in field_indexes
-        )
-        if preserve:
-            out_row = list(row)
-        else:
-            out_row = [v for i, v in enumerate(row) if i not in field_indexes]
-        out_row.extend([value])
-        yield tuple(out_row)
+    pass

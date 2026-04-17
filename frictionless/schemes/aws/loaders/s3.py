@@ -18,12 +18,7 @@ class S3Loader(Loader):
     # Read
 
     def read_byte_stream_create(self):  # type: ignore
-        control = AwsControl.from_dialect(self.resource.dialect)
-        parts = urlparse(self.resource.normpath, allow_fragments=False)
-        client = platform.boto3.resource("s3", endpoint_url=control.s3_endpoint_url)
-        object = client.Object(bucket_name=parts.netloc, key=parts.path[1:])  # type: ignore
-        byte_stream = S3ByteStream(object)
-        return byte_stream
+        pass
 
     # Write
 
@@ -49,16 +44,16 @@ class S3ByteStream(io.RawIOBase):
 
     @property
     def size(self):
-        return self.object.content_length
+        pass
 
     def readable(self):
-        return True
+        pass
 
     def seekable(self):
-        return True
+        pass
 
     def tell(self):
-        return self.position
+        pass
 
     def seek(self, offset: int, whence: int = io.SEEK_SET):
         if whence == io.SEEK_SET:

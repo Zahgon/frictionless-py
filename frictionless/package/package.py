@@ -177,26 +177,23 @@ class Package(Metadata, metaclass=Factory):
         A basepath of the package
         The normpath of the resource is joined `basepath` and `/path`
         """
-        if self._basepath:
-            return self._basepath
-        if self.dataset:
-            return self.dataset.basepath
+        pass
 
     @basepath.setter
     def basepath(self, value: Optional[str]):
-        self._basepath = value
+        pass
 
     # Resources
 
     @property
     def resource_names(self) -> List[str]:
         """Return names of resources"""
-        return [resource.name for resource in self.resources if resource.name is not None]  # type: ignore
+        pass
 
     @property
     def resource_paths(self) -> List[str]:
         """Return names of resources"""
-        return [resource.path for resource in self.resources if resource.path is not None]
+        pass
 
     def add_resource(self, resource: Union[Resource, str]) -> Resource:
         """Add new resource to the package"""
@@ -208,10 +205,7 @@ class Package(Metadata, metaclass=Factory):
 
     def has_resource(self, name: str) -> bool:
         """Check if a resource is present"""
-        for resource in self.resources:
-            if resource.name == name:
-                return True
-        return False
+        pass
 
     def has_table_resource(self, name: str) -> bool:
         """Check if a table resource is present"""
@@ -239,14 +233,7 @@ class Package(Metadata, metaclass=Factory):
 
     def set_resource(self, resource: Resource) -> Optional[Resource]:
         """Set resource by name"""
-        assert resource.name
-        if self.has_resource(resource.name):
-            prev_resource = self.get_resource(resource.name)
-            index = self.resources.index(prev_resource)
-            self.resources[index] = resource
-            resource.package = self
-            return prev_resource
-        self.add_resource(resource)
+        pass
 
     def update_resource(self, name: str, descriptor: types.IDescriptor) -> Resource:
         """Update resource"""
@@ -267,17 +254,10 @@ class Package(Metadata, metaclass=Factory):
 
     def clear_resources(self):
         """Remove all the resources"""
-        self.resources = []
+        pass
 
     def deduplicate_resoures(self):
-        if len(self.resource_names) != len(set(self.resource_names)):
-            seen_names: List[str] = []
-            for index, resource in enumerate(self.resources):
-                name = resource.name
-                count = seen_names.count(name) + 1
-                if count > 1:
-                    self.resources[index].name = "%s%s" % (name, count)
-                seen_names.append(name)
+        pass
 
     # Infer
 
@@ -324,12 +304,7 @@ class Package(Metadata, metaclass=Factory):
         Returns:
             any[]: flatten package
         """
-        result: List[List[Any]] = []
-        for resource in self.resources:
-            context: Dict[str, Any] = {}
-            context.update(resource.to_descriptor())
-            result.append([context.get(prop) for prop in spec])
-        return result
+        pass
 
     # Dereference
 
@@ -339,8 +314,7 @@ class Package(Metadata, metaclass=Factory):
         If some of underlaying metadata is provided as a string
         it will replace it by the metadata object
         """
-        for resource in self.resources:
-            resource.dereference()
+        pass
 
     # Analyze
 
@@ -357,11 +331,7 @@ class Package(Metadata, metaclass=Factory):
             dict: dict of resource analysis
 
         """
-        analysis: Dict[str, Any] = {}
-        for resource in self.resources:
-            if isinstance(resource, platform.frictionless_resources.TableResource):
-                analysis[resource.name] = resource.analyze(detailed=detailed)
-        return analysis
+        pass
 
     # Describe
 
@@ -558,14 +528,7 @@ class Package(Metadata, metaclass=Factory):
         Returns:
             path(str): location of the .dot file
         """
-        mapper = platform.frictionless_formats.erd.ErdMapper()
-        text = mapper.write_package(self)
-        if path:
-            try:
-                helpers.write_file(path, text)
-            except Exception as exc:
-                raise FrictionlessException(errors.PackageError(note=str(exc))) from exc
-        return text
+        pass
 
     # Metadata
 
@@ -751,8 +714,4 @@ class Package(Metadata, metaclass=Factory):
 
 
 def _validate_parallel(options: types.IDescriptor) -> types.IDescriptor:
-    resource_options = options["resource"]
-    validate_options = options["validate"]
-    resource = Resource.from_descriptor(**resource_options)
-    report = resource.validate(**validate_options)
-    return report.to_descriptor()
+    pass

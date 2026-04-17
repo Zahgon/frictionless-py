@@ -27,11 +27,11 @@ def create_options(descriptor: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def create_descriptor(**options: Any) -> Dict[str, Any]:
-    return {stringcase.camelcase(key): value for key, value in options.items()}  # type: ignore
+    pass
 
 
 def stringify_label(cells: List[Any]):
-    return ["" if cell is None else str(cell).strip() for cell in cells]
+    pass
 
 
 def get_name(value: Any):
@@ -44,7 +44,7 @@ def pass_through(iterator: Iterator[Any]):
 
 
 def safe_format(text: str, data: Dict[str, Any]):
-    return text.format_map(SafeFormatDict(data))
+    pass
 
 
 class SafeFormatDict(Dict[str, Any]):
@@ -81,11 +81,7 @@ def remove_non_values(mapping: Dict[str, Any]):
 
 
 def normalize_source(source: Any) -> Any:
-    if isinstance(source, Path):
-        source = str(source)
-    if isinstance(source, Mapping):
-        source = {key: value for key, value in source.items()}  # type: ignore
-    return source
+    pass
 
 
 @contextmanager
@@ -196,13 +192,7 @@ def is_remote_path(path: str) -> bool:
 
 
 def normalize_path(path: str, *, basepath: Optional[str] = None):
-    if not is_remote_path(path) and not os.path.isabs(path):
-        if basepath:
-            separator = os.path.sep
-            if is_remote_path(basepath):
-                separator = "/"
-            path = separator.join([basepath, path])
-    return path
+    pass
 
 
 # NOTE:
@@ -244,56 +234,23 @@ def is_expandable_source(source: Any) -> bool:
 
 
 def expand_source(source: Union[List[Any], str], *, basepath: Optional[str] = None):
-    if isinstance(source, list):
-        return source
-    paths: List[str] = []
-    if basepath:
-        source = os.path.join(basepath, source)
-    pattern = f"{source}/*" if os.path.isdir(source) else source
-    configs = {"recursive": True} if "**" in pattern else {}
-    for path in sorted(glob.glob(pattern, **configs)):  # type: ignore
-        if basepath:
-            path = os.path.relpath(path, basepath)
-        paths.append(path)
-    return paths
+    pass
 
 
 def is_zip_descriptor(descriptor: Union[str, Dict[str, Any]]):
-    if isinstance(descriptor, str):
-        parsed = urlparse(descriptor)
-        format = os.path.splitext(parsed.path or parsed.netloc)[1][1:].lower()
-        return format == "zip"
+    pass
 
 
 def is_type(object: type, name: str):
-    return type(object).__name__ == name
+    pass
 
 
 def parse_json_string(string: Optional[str]):
-    if string is None:
-        return None
-    if string.startswith("{") and string.endswith("}"):
-        return json.loads(string)
-    return string
+    pass
 
 
 def parse_descriptors_string(string: Optional[str]):
-    if string is None:
-        return None
-    descriptors: List[Dict[str, Any]] = []
-    parts = string.split(" ")
-    for part in parts:
-        type, *props = part.split(":")
-        descriptor = dict(type=type)
-        for prop in props:
-            name, value = prop.split("=")
-            try:
-                value = ast.literal_eval(value)
-            except Exception:
-                pass
-            descriptor[name] = value
-        descriptors.append(descriptor)
-    return descriptors
+    pass
 
 
 T = TypeVar("T", int, str)
@@ -302,19 +259,7 @@ T = TypeVar("T", int, str)
 def parse_csv_string_typed(
     string: str, *, convert: Type[T] = str, fallback: bool = False
 ) -> List[T]:
-    reader = csv.reader(io.StringIO(string), delimiter=",")
-    result: List[T] = []
-    for row in reader:
-        for cell in row:
-            try:
-                cell = convert(cell)
-            except ValueError:
-                if not fallback:
-                    raise
-                pass
-            result.append(cell)  # type: ignore
-        break
-    return result
+    pass
 
 
 def stringify_csv_string(cells: List[str], **options: Any):

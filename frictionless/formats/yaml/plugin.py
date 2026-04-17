@@ -21,13 +21,7 @@ class YamlPlugin(Plugin):
             return YamlParser(resource)
 
     def detect_resource(self, resource: Resource):
-        if resource.format == "yaml":
-            resource.datatype = (
-                resource.datatype
-                or Detector.detect_metadata_type(resource.normpath, format="yaml")
-                or "json"
-            )
-            resource.mediatype = resource.mediatype or "text/yaml"
+        pass
 
     def select_control_class(self, type: Optional[str] = None):
         if type == "yaml":

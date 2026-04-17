@@ -44,13 +44,7 @@ def camelcase(string: str):
         string: Camel case string.
 
     """
-
-    string = re.sub(r"\w[\s\W]+\w", "", str(string))
-    if not string:
-        return string
-    return lowercase(string[0]) + re.sub(
-        r"[\-_\.\s]([a-z])", lambda matched: uppercase(matched.group(1)), string[1:]
-    )
+    pass
 
 
 def lowercase(string: str):
@@ -97,5 +91,4 @@ def uppercase(string: str):
         string: Uppercase case string.
 
     """
-
-    return str(string).upper()
+    pass

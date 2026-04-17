@@ -21,21 +21,7 @@ class GsheetsParser(Parser):
     # Read
 
     def read_cell_stream_create(self) -> types.ICellStream:
-        assert self.resource.normpath
-        path = self.resource.normpath
-        match = re.search(r".*/d/(?P<key>[^/]+)/.*?(?:gid=(?P<gid>\d+))?$", path)
-        path = "https://docs.google.com/spreadsheets/d/%s/export?format=csv&id=%s"
-        key, gid = "", ""
-        if match:
-            key = match.group("key")
-            gid = match.group("gid")
-        path = path % (key, key)
-        if gid:
-            path = "%s&gid=%s" % (path, gid)
-        with TableResource(path=path) as resource:
-            # TODO: remove this cludge
-            resource.stats = self.resource.stats
-            yield from resource.cell_stream
+        pass
 
     # Write
 

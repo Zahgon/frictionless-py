@@ -12,10 +12,7 @@ class BufferLoader(Loader):
     # Read
 
     def read_byte_stream_create(self):
-        byte_stream = io.BufferedRandom(io.BytesIO())  # type: ignore
-        byte_stream.write(self.resource.data)  # type: ignore
-        byte_stream.seek(0)
-        return byte_stream
+        pass
 
     # Write
 

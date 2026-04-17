@@ -45,7 +45,7 @@ class Header(List[str]):  # type: ignore
         Returns:
             Schema: table labels
         """
-        return self.__labels
+        pass
 
     @cached_property
     def fields(self):
@@ -61,7 +61,7 @@ class Header(List[str]):  # type: ignore
         Returns:
             str[]: table field names
         """
-        return self.__field_names
+        pass
 
     @cached_property
     def field_numbers(self):
@@ -69,7 +69,7 @@ class Header(List[str]):  # type: ignore
         Returns:
             str[]: list of field numbers
         """
-        return list(range(1, len(self.__field_names) + 1))
+        pass
 
     @cached_property
     def row_numbers(self):
@@ -77,7 +77,7 @@ class Header(List[str]):  # type: ignore
         Returns:
             int[]: table row positions
         """
-        return self.__row_numbers
+        pass
 
     @cached_property
     def missing(self):
@@ -85,7 +85,7 @@ class Header(List[str]):  # type: ignore
         Returns:
             bool: if there is not header
         """
-        return not self.__labels
+        pass
 
     @cached_property
     def errors(self):
@@ -101,7 +101,7 @@ class Header(List[str]):  # type: ignore
         Returns:
             bool: if header valid
         """
-        return not self.__errors
+        pass
 
     # Convert
 
@@ -110,9 +110,7 @@ class Header(List[str]):  # type: ignore
         Returns:
             str: a row as a CSV string
         """
-
-        cells = self.to_list()
-        return helpers.stringify_csv_string(cells)
+        pass
 
     def to_list(self):
         """Convert to a list"""

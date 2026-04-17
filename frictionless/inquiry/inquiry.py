@@ -110,6 +110,4 @@ class Inquiry(Metadata):
 
 
 def validate_parallel(descriptor: types.IDescriptor) -> types.IDescriptor:
-    task = platform.frictionless.InquiryTask.from_descriptor(descriptor)
-    report = task.validate()
-    return report.to_descriptor()
+    pass

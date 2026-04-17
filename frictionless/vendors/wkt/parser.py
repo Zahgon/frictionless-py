@@ -58,771 +58,380 @@ class Parser(Parser):
 
     @tatsumasu()
     def _wkt_representation_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._point_text_representation_()
-            with self._option():
-                self._curve_text_representation_()
-            with self._option():
-                self._surface_text_representation_()
-            with self._option():
-                self._collection_text_representation_()
-            self._error(
-                "expecting one of: "
-                "'POINT'"
-                "<circularstring_text_representation>"
-                "<collection_text_representation>"
-                "<compoundcurve_text_representation>"
-                "<curve_text_representation>"
-                "<curvepolygon_text_representation>"
-                "<geometrycollection_text_representation>"
-                "<linestring_text_representation>"
-                "<multicurve_text_representation>"
-                "<multipoint_text_representation>"
-                "<multisurface_text_representation>"
-                "<point_text_representation>"
-                "<surface_text_representation>"
-            )
+        pass
 
     @tatsumasu()
     def _point_text_representation_(self):  # noqa
-        self._token("POINT")
-        with self._optional():
-            self._z_m_()
-        self._point_text_()
+        pass
 
     @tatsumasu()
     def _curve_text_representation_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._linestring_text_representation_()
-            with self._option():
-                self._circularstring_text_representation_()
-            with self._option():
-                self._compoundcurve_text_representation_()
-            self._error(
-                "expecting one of: "
-                "'CIRCULARSTRING' 'COMPOUNDCURVE'"
-                "'LINESTRING'"
-                "<circularstring_text_representation>"
-                "<compoundcurve_text_representation>"
-                "<linestring_text_representation>"
-            )
+        pass
 
     @tatsumasu()
     def _linestring_text_representation_(self):  # noqa
-        self._token("LINESTRING")
-        with self._optional():
-            self._z_m_()
-        self._linestring_text_body_()
+        pass
 
     @tatsumasu()
     def _circularstring_text_representation_(self):  # noqa
-        self._token("CIRCULARSTRING")
-        with self._optional():
-            self._z_m_()
-        self._circularstring_text_()
+        pass
 
     @tatsumasu()
     def _compoundcurve_text_representation_(self):  # noqa
-        self._token("COMPOUNDCURVE")
-        with self._optional():
-            self._z_m_()
-        self._compoundcurve_text_()
+        pass
 
     @tatsumasu()
     def _surface_text_representation_(self):  # noqa
-        self._curvepolygon_text_representation_()
+        pass
 
     @tatsumasu()
     def _curvepolygon_text_representation_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._token("CURVEPOLYGON")
-                with self._optional():
-                    self._z_m_()
-                self._curvepolygon_text_body_()
-            with self._option():
-                self._polygon_text_representation_()
-            with self._option():
-                self._triangle_text_representation_()
-            self._error(
-                "expecting one of: "
-                "'CURVEPOLYGON' 'POLYGON' 'TRIANGLE'"
-                "<polygon_text_representation>"
-                "<triangle_text_representation>"
-            )
+        pass
 
     @tatsumasu()
     def _polygon_text_representation_(self):  # noqa
-        self._token("POLYGON")
-        with self._optional():
-            self._z_m_()
-        self._polygon_text_body_()
+        pass
 
     @tatsumasu()
     def _triangle_text_representation_(self):  # noqa
-        self._token("TRIANGLE")
-        with self._optional():
-            self._z_m_()
-        self._triangle_text_body_()
+        pass
 
     @tatsumasu()
     def _collection_text_representation_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._multipoint_text_representation_()
-            with self._option():
-                self._multicurve_text_representation_()
-            with self._option():
-                self._multisurface_text_representation_()
-            with self._option():
-                self._geometrycollection_text_representation_()
-            self._error(
-                "expecting one of: "
-                "'GEOMETRYCOLLECTION' 'MULTICURVE'"
-                "'MULTIPOINT' 'MULTISURFACE'"
-                "<geometrycollection_text_representation>"
-                "<multicurve_text_representation>"
-                "<multilinestring_text_representation>"
-                "<multipoint_text_representation>"
-                "<multipolygon_text_representation>"
-                "<multisurface_text_representation>"
-                "<polyhedralsurface_text_representation>"
-                "<tin_text_representation>"
-            )
+        pass
 
     @tatsumasu()
     def _multipoint_text_representation_(self):  # noqa
-        self._token("MULTIPOINT")
-        with self._optional():
-            self._z_m_()
-        self._multipoint_text_()
+        pass
 
     @tatsumasu()
     def _multicurve_text_representation_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._token("MULTICURVE")
-                with self._optional():
-                    self._z_m_()
-                self._multicurve_text_()
-            with self._option():
-                self._multilinestring_text_representation_()
-            self._error(
-                "expecting one of: "
-                "'MULTICURVE' 'MULTILINESTRING'"
-                "<multilinestring_text_representation>"
-            )
+        pass
 
     @tatsumasu()
     def _multilinestring_text_representation_(self):  # noqa
-        self._token("MULTILINESTRING")
-        with self._optional():
-            self._z_m_()
-        self._multilinestring_text_()
+        pass
 
     @tatsumasu()
     def _multisurface_text_representation_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._token("MULTISURFACE")
-                with self._optional():
-                    self._z_m_()
-                self._multisurface_text_()
-            with self._option():
-                self._multipolygon_text_representation_()
-            with self._option():
-                self._polyhedralsurface_text_representation_()
-            with self._option():
-                self._tin_text_representation_()
-            self._error(
-                "expecting one of: "
-                "'MULTIPOLYGON' 'MULTISURFACE'"
-                "'POLYHEDRALSURFACE' 'TIN'"
-                "<multipolygon_text_representation>"
-                "<polyhedralsurface_text_representation>"
-                "<tin_text_representation>"
-            )
+        pass
 
     @tatsumasu()
     def _multipolygon_text_representation_(self):  # noqa
-        self._token("MULTIPOLYGON")
-        with self._optional():
-            self._z_m_()
-        self._multipolygon_text_()
+        pass
 
     @tatsumasu()
     def _polyhedralsurface_text_representation_(self):  # noqa
-        self._token("POLYHEDRALSURFACE")
-        with self._optional():
-            self._z_m_()
-        self._polyhedralsurface_text_()
+        pass
 
     @tatsumasu()
     def _tin_text_representation_(self):  # noqa
-        self._token("TIN")
-        with self._optional():
-            self._z_m_()
-        self._tin_text_()
+        pass
 
     @tatsumasu()
     def _geometrycollection_text_representation_(self):  # noqa
-        self._token("GEOMETRYCOLLECTION")
-        with self._optional():
-            self._z_m_()
-        self._geometrycollection_text_()
+        pass
 
     @tatsumasu()
     def _linestring_text_body_(self):  # noqa
-        self._linestring_text_()
+        pass
 
     @tatsumasu()
     def _curvepolygon_text_body_(self):  # noqa
-        self._curvepolygon_text_()
+        pass
 
     @tatsumasu()
     def _polygon_text_body_(self):  # noqa
-        self._polygon_text_()
+        pass
 
     @tatsumasu()
     def _triangle_text_body_(self):  # noqa
-        self._triangle_text_()
+        pass
 
     @tatsumasu()
     def _point_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._point_()
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _point_(self):  # noqa
-        self._x_()
-        self._y_()
-        with self._optional():
-            self._z_()
-        with self._optional():
-            self._m_()
+        pass
 
     @tatsumasu()
     def _x_(self):  # noqa
-        self._number_()
+        pass
 
     @tatsumasu()
     def _y_(self):  # noqa
-        self._number_()
+        pass
 
     @tatsumasu()
     def _z_(self):  # noqa
-        self._number_()
+        pass
 
     @tatsumasu()
     def _m_(self):  # noqa
-        self._number_()
+        pass
 
     @tatsumasu()
     def _linestring_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._point_()
-
-                def block1():
-                    self._comma_()
-                    self._point_()
-
-                self._closure(block1)
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _circularstring_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._point_()
-
-                def block1():
-                    self._comma_()
-                    self._point_()
-
-                self._closure(block1)
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _compoundcurve_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._single_curve_text_()
-
-                def block1():
-                    self._comma_()
-                    self._single_curve_text_()
-
-                self._closure(block1)
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _single_curve_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._linestring_text_body_()
-            with self._option():
-                self._circularstring_text_representation_()
-            self._error(
-                "expecting one of: "
-                "'CIRCULARSTRING'"
-                "<circularstring_text_representation>"
-                "<empty_set> <left_paren>"
-                "<linestring_text> <linestring_text_body>"
-            )
+        pass
 
     @tatsumasu()
     def _curve_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._linestring_text_body_()
-            with self._option():
-                self._circularstring_text_representation_()
-            with self._option():
-                self._compoundcurve_text_representation_()
-            self._error(
-                "expecting one of: "
-                "'CIRCULARSTRING' 'COMPOUNDCURVE'"
-                "<circularstring_text_representation>"
-                "<compoundcurve_text_representation>"
-                "<empty_set> <left_paren>"
-                "<linestring_text> <linestring_text_body>"
-            )
+        pass
 
     @tatsumasu()
     def _ring_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._linestring_text_body_()
-            with self._option():
-                self._circularstring_text_representation_()
-            with self._option():
-                self._compoundcurve_text_representation_()
-            self._error(
-                "expecting one of: "
-                "'CIRCULARSTRING' 'COMPOUNDCURVE'"
-                "<circularstring_text_representation>"
-                "<compoundcurve_text_representation>"
-                "<empty_set> <left_paren>"
-                "<linestring_text> <linestring_text_body>"
-            )
+        pass
 
     @tatsumasu()
     def _surface_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._token("CURVEPOLYGON")
-                self._curvepolygon_text_body_()
-            with self._option():
-                self._polygon_text_body_()
-            self._error(
-                "expecting one of: "
-                "'CURVEPOLYGON' <empty_set> <left_paren>"
-                "<polygon_text> <polygon_text_body>"
-            )
+        pass
 
     @tatsumasu()
     def _curvepolygon_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._ring_text_()
-
-                def block1():
-                    self._comma_()
-                    self._ring_text_()
-
-                self._closure(block1)
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _polygon_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._linestring_text_()
-
-                def block1():
-                    self._comma_()
-                    self._linestring_text_()
-
-                self._closure(block1)
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _triangle_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._linestring_text_()
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _multipoint_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._point_text_()
-
-                def block1():
-                    self._comma_()
-                    self._point_text_()
-
-                self._closure(block1)
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _multicurve_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._curve_text_()
-
-                def block1():
-                    self._comma_()
-                    self._curve_text_()
-
-                self._closure(block1)
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _multilinestring_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._linestring_text_body_()
-
-                def block1():
-                    self._comma_()
-                    self._linestring_text_body_()
-
-                self._closure(block1)
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _multisurface_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._surface_text_()
-
-                def block1():
-                    self._comma_()
-                    self._surface_text_()
-
-                self._closure(block1)
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _multipolygon_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._polygon_text_body_()
-
-                def block1():
-                    self._comma_()
-                    self._polygon_text_body_()
-
-                self._closure(block1)
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _polyhedralsurface_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._polygon_text_body_()
-
-                def block1():
-                    self._comma_()
-                    self._polygon_text_body_()
-
-                self._closure(block1)
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _tin_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._triangle_text_body_()
-
-                def block1():
-                    self._comma_()
-                    self._triangle_text_body_()
-
-                self._closure(block1)
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _geometrycollection_text_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._empty_set_()
-            with self._option():
-                self._left_paren_()
-                self._wkt_representation_()
-
-                def block1():
-                    self._comma_()
-                    self._wkt_representation_()
-
-                self._closure(block1)
-                self._right_paren_()
-            self._error("expecting one of: " "'(' 'EMPTY' <empty_set> <left_paren>")
+        pass
 
     @tatsumasu()
     def _empty_set_(self):  # noqa
-        self._token("EMPTY")
+        pass
 
     @tatsumasu()
     def _z_m_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._token("ZM")
-            with self._option():
-                self._token("Z")
-            with self._option():
-                self._token("M")
-            self._error("expecting one of: " "'M' 'Z' 'ZM'")
+        pass
 
     @tatsumasu()
     def _left_paren_(self):  # noqa
-        self._token("(")
+        pass
 
     @tatsumasu()
     def _right_paren_(self):  # noqa
-        self._token(")")
+        pass
 
     @tatsumasu()
     def _comma_(self):  # noqa
-        self._token(",")
+        pass
 
     @tatsumasu()
     def _number_(self):  # noqa
-        self._pattern("[+-]?([0-9]+(\\.[0-9]*)?|\\.[0-9]+)([eE][+-]?[0-9]+)?")
+        pass
 
 
 class Semantics:
     def wkt_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def point_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def curve_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def linestring_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def circularstring_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def compoundcurve_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def surface_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def curvepolygon_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def polygon_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def triangle_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def collection_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def multipoint_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def multicurve_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def multilinestring_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def multisurface_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def multipolygon_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def polyhedralsurface_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def tin_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def geometrycollection_text_representation(self, ast):  # noqa
-        return ast
+        pass
 
     def linestring_text_body(self, ast):  # noqa
-        return ast
+        pass
 
     def curvepolygon_text_body(self, ast):  # noqa
-        return ast
+        pass
 
     def polygon_text_body(self, ast):  # noqa
-        return ast
+        pass
 
     def triangle_text_body(self, ast):  # noqa
-        return ast
+        pass
 
     def point_text(self, ast):  # noqa
-        return ast
+        pass
 
     def point(self, ast):  # noqa
-        return ast
+        pass
 
     def x(self, ast):  # noqa
-        return ast
+        pass
 
     def y(self, ast):  # noqa
-        return ast
+        pass
 
     def z(self, ast):  # noqa
-        return ast
+        pass
 
     def m(self, ast):  # noqa
-        return ast
+        pass
 
     def linestring_text(self, ast):  # noqa
-        return ast
+        pass
 
     def circularstring_text(self, ast):  # noqa
-        return ast
+        pass
 
     def compoundcurve_text(self, ast):  # noqa
-        return ast
+        pass
 
     def single_curve_text(self, ast):  # noqa
-        return ast
+        pass
 
     def curve_text(self, ast):  # noqa
-        return ast
+        pass
 
     def ring_text(self, ast):  # noqa
-        return ast
+        pass
 
     def surface_text(self, ast):  # noqa
-        return ast
+        pass
 
     def curvepolygon_text(self, ast):  # noqa
-        return ast
+        pass
 
     def polygon_text(self, ast):  # noqa
-        return ast
+        pass
 
     def triangle_text(self, ast):  # noqa
-        return ast
+        pass
 
     def multipoint_text(self, ast):  # noqa
-        return ast
+        pass
 
     def multicurve_text(self, ast):  # noqa
-        return ast
+        pass
 
     def multilinestring_text(self, ast):  # noqa
-        return ast
+        pass
 
     def multisurface_text(self, ast):  # noqa
-        return ast
+        pass
 
     def multipolygon_text(self, ast):  # noqa
-        return ast
+        pass
 
     def polyhedralsurface_text(self, ast):  # noqa
-        return ast
+        pass
 
     def tin_text(self, ast):  # noqa
-        return ast
+        pass
 
     def geometrycollection_text(self, ast):  # noqa
-        return ast
+        pass
 
     def empty_set(self, ast):  # noqa
-        return ast
+        pass
 
     def z_m(self, ast):  # noqa
-        return ast
+        pass
 
     def left_paren(self, ast):  # noqa
-        return ast
+        pass
 
     def right_paren(self, ast):  # noqa
-        return ast
+        pass
 
     def comma(self, ast):  # noqa
-        return ast
+        pass
 
     def number(self, ast):  # noqa
-        return ast
+        pass
 
 
 def main(filename, **kwargs):
-    if not filename or filename == "-":
-        text = sys.stdin.read()
-    else:
-        with open(filename) as f:
-            text = f.read()
-    parser = Parser()
-    return parser.parse(text, filename=filename, **kwargs)
+    pass
 
 
 if __name__ == "__main__":

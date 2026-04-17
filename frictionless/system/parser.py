@@ -62,9 +62,7 @@ class Parser:
         Returns:
             Loader: loader
         """
-        if self.__loader is None:
-            raise FrictionlessException("parser is not open or non requiring loader")
-        return self.__loader
+        pass
 
     @property
     def sample(self) -> types.ISample:
@@ -72,9 +70,7 @@ class Parser:
         Returns:
             Loader: sample
         """
-        if self.__sample is None:
-            raise FrictionlessException("parser is not open")
-        return self.__sample
+        pass
 
     @property
     def cell_stream(self) -> types.ICellStream:
@@ -82,22 +78,13 @@ class Parser:
         Yields:
             any[][]: list stream
         """
-        if self.__cell_stream is None:
-            raise FrictionlessException("parser is not open")
-        return self.__cell_stream
+        pass
 
     # Open/Close
 
     def open(self):
         """Open the parser as "io.open" does"""
-        self.close()
-        try:
-            self.__loader = self.read_loader()
-            self.__cell_stream = self.read_cell_stream()
-            return self
-        except Exception:
-            self.close()
-            raise
+        pass
 
     def close(self) -> None:
         """Close the parser as "filelike.close" does"""
@@ -111,7 +98,7 @@ class Parser:
         Returns:
             bool: if closed
         """
-        return self.__loader is None
+        pass
 
     # Read
 
@@ -121,9 +108,7 @@ class Parser:
         Returns:
             Loader: loader
         """
-        if self.requires_loader:
-            loader = system.create_loader(self.resource)
-            return loader.open()
+        pass
 
     def read_cell_stream(self) -> types.ICellStream:
         """Read list stream
@@ -131,15 +116,7 @@ class Parser:
         Returns:
             gen<any[][]>: list stream
         """
-        self.__sample = []
-        cell_stream = self.read_cell_stream_create()
-        cell_stream = self.read_cell_stream_handle_errors(cell_stream)
-        for cells in cell_stream:
-            self.__sample.append(cells)
-            if len(self.__sample) >= self.resource.detector.sample_size:
-                break
-        cell_stream = chain(self.__sample, cell_stream)
-        return cell_stream
+        pass
 
     def read_cell_stream_create(self) -> types.ICellStream:
         """Create list stream from loader
@@ -164,7 +141,7 @@ class Parser:
         Returns:
             gen<any[][]>: list stream
         """
-        return CellStreamWithErrorHandling(cell_stream)
+        pass
 
     # Write
 

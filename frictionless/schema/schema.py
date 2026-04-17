@@ -91,13 +91,12 @@ class Schema(Metadata, metaclass=Factory):
     @property
     def field_names(self) -> List[str]:
         """List of field names"""
-        # TODO: fix file.name is optional
-        return [field.name for field in self.fields if field.name is not None]  # type: ignore
+        pass
 
     @property
     def field_types(self) -> List[str]:
         """List of field types"""
-        return [field.type for field in self.fields]
+        pass
 
     def add_field(self, field: Field, *, position: Optional[int] = None) -> None:
         """Add new field to the schema"""
@@ -124,18 +123,11 @@ class Schema(Metadata, metaclass=Factory):
 
     def set_field(self, field: Field) -> Optional[Field]:
         """Set field by name"""
-        assert field.name
-        if self.has_field(field.name):
-            prev_field = self.get_field(field.name)
-            index = self.fields.index(prev_field)
-            self.fields[index] = field
-            field.schema = self
-            return prev_field
-        self.add_field(field)
+        pass
 
     def set_field_type(self, name: str, type: str) -> Field:
         """Set field type"""
-        return self.update_field(name, {"type": type})
+        pass
 
     def update_field(self, name: str, descriptor: types.IDescriptor) -> Field:
         """Update field"""
@@ -156,16 +148,10 @@ class Schema(Metadata, metaclass=Factory):
 
     def clear_fields(self) -> None:
         """Remove all the fields"""
-        self.fields = []
+        pass
 
     def deduplicate_fields(self):
-        if len(self.field_names) != len(set(self.field_names)):
-            seen_names: List[str] = []
-            for index, name in enumerate(self.field_names):
-                count = seen_names.count(name) + 1
-                if count > 1:
-                    self.fields[index].name = "%s%s" % (name, count)
-                seen_names.append(name)
+        pass
 
     # Describe
 
@@ -196,18 +182,10 @@ class Schema(Metadata, metaclass=Factory):
         Returns:
             any[]: list of processed cells
         """
-        res_cells: List[Any] = []
-        res_notes: List[INotes] = []
-        readers = self.create_cell_readers()
-        for index, reader in enumerate(readers.values()):
-            cell = cells[index] if len(cells) > index else None
-            cell, notes = reader(cell)
-            res_cells.append(cell)
-            res_notes.append(notes)
-        return res_cells, res_notes
+        pass
 
     def create_cell_readers(self):
-        return {field.name: field.create_cell_reader() for field in self.fields}
+        pass
 
     # Write
 
@@ -221,18 +199,10 @@ class Schema(Metadata, metaclass=Factory):
         Returns:
             any[]: list of processed cells
         """
-        res_cells: List[Any] = []
-        res_notes: List[INotes] = []
-        writers = self.create_cell_writers()
-        for index, writer in enumerate(writers.values()):
-            cell = cells[index] if len(cells) > index else None
-            cell, notes = writer(cell)
-            res_cells.append(cell)
-            res_notes.append(notes)
-        return res_cells, res_notes
+        pass
 
     def create_cell_writers(self):
-        return {field.name: field.create_cell_reader() for field in self.fields}
+        pass
 
     # Flatten
 
@@ -245,12 +215,7 @@ class Schema(Metadata, metaclass=Factory):
         Returns:
             any[]: flatten schema
         """
-        result: List[Any] = []
-        for field in self.fields:
-            context: Dict[str, Any] = {}
-            context.update(field.to_descriptor())
-            result.append([context.get(prop) for prop in spec])
-        return result
+        pass
 
     # Convert
 
@@ -261,9 +226,7 @@ class Schema(Metadata, metaclass=Factory):
         Parameters:
             profile: path or dict with JSONSchema profile
         """
-        profile = cls.metadata_retrieve(profile)
-        mapper = platform.frictionless_formats.jsonschema.JsonschemaMapper()
-        return mapper.read_schema(profile)
+        pass
 
     def to_excel_template(self, path: str) -> None:
         """Export schema as an excel template
@@ -271,13 +234,11 @@ class Schema(Metadata, metaclass=Factory):
         Parameters:
             path: path of excel file to create with ".xlsx" extension
         """
-        mapper = platform.frictionless_formats.excel.ExcelMapper()
-        return mapper.write_schema(self, path=path)
+        pass
 
     def to_summary(self) -> str:
         """Summary of the schema in table format"""
-        content = [[f.name, f.type, True if f.required else ""] for f in self.fields]
-        return tabulate(content, headers=["name", "type", "required"], tablefmt="grid")
+        pass
 
     # Metadata
 

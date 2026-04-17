@@ -33,10 +33,7 @@ class table_debug(Step):
 
         # Data
         def data():  # type: ignore
-            with current:
-                for row in current.row_stream:  # type: ignore
-                    self.function(row)  # type: ignore
-                    yield row
+            pass
 
         # Meta
         resource.data = data

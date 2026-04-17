@@ -14,6 +14,4 @@ class PythonPlugin(Plugin):
     # Hooks
 
     def detect_resource(self, resource: Resource):
-        if resource.format == "py":
-            resource.datatype = resource.datatype or "script"
-            resource.mediatype = resource.mediatype or "text/x-python"
+        pass

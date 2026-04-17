@@ -13,18 +13,7 @@ class StreamLoader(Loader):
     # Read
 
     def read_byte_stream_create(self):  # type: ignore
-        byte_stream = self.resource.data
-        if not os.path.isfile(byte_stream.name):  # type: ignore
-            note = f"only local streams are supported: {byte_stream}"
-            raise FrictionlessException(errors.SchemeError(note=note))
-        if hasattr(byte_stream, "encoding"):
-            try:
-                byte_stream = open(byte_stream.name, "rb")  # type: ignore
-            except Exception:
-                note = f"cannot open a stream in the byte mode: {byte_stream}"
-                raise FrictionlessException(errors.SchemeError(note=note))
-        byte_stream = ReusableByteStream(byte_stream)  # type: ignore
-        return byte_stream
+        pass
 
     # Write
 

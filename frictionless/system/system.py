@@ -86,44 +86,15 @@ class System:
         Returns:
             requests.Session: a HTTP session
         """
-        if not self.__http_session:
-            http_session = platform.requests.Session()
-            http_session.headers.update(settings.DEFAULT_HTTP_HEADERS)
-            self.__http_session = http_session
-        return self.__http_session
+        pass
 
     @cached_property
     def methods(self) -> Dict[str, Any]:
-        methods: Dict[str, Any] = {}
-        for action in self.supported_hooks:
-            methods[action] = OrderedDict()
-            for name, plugin in self.plugins.items():
-                if action in vars(type(plugin)):
-                    func = getattr(plugin, action, None)
-                    methods[action][name] = func
-        return methods
+        pass
 
     @cached_property
     def plugins(self) -> OrderedDict[str, Plugin]:
-        modules: OrderedDict[str, Any] = OrderedDict()
-        for item in pkgutil.iter_modules():
-            if item.name.startswith("frictionless_"):
-                module = import_module(item.name)
-                modules[item.name.replace("frictionless_", "")] = module
-        for group in ["schemes", "formats", "portals"]:
-            module = import_module(f"frictionless.{group}")
-            if module.__file__:
-                path = os.path.dirname(module.__file__)
-                for _, name, _ in pkgutil.iter_modules([path]):
-                    module = import_module(f"frictionless.{group}.{name}")
-                    modules[name] = module
-        plugins = OrderedDict(self.__dynamic_plugins)
-        for name, module in modules.items():
-            Plugin = getattr(module, f"{name.capitalize()}Plugin", None)
-            if Plugin:
-                plugin = Plugin()
-                plugins[name] = plugin
-        return plugins
+        pass
 
     # Register/Deregister
 
@@ -145,10 +116,7 @@ class System:
         Parameters:
             name (str): plugin name
         """
-        self.__dynamic_plugins.pop(name, None)
-        if "methods" in self.__dict__:
-            del self.__dict__["plugins"]
-            del self.__dict__["methods"]
+        pass
 
     # Context
 
@@ -162,27 +130,7 @@ class System:
         http_session: Optional[Any] = None,
     ):
         # Current
-        current_trusted = self.trusted
-        current_onerror = self.onerror
-        current_standards = self.standards
-        current_http_session = self.__http_session
-
-        # Update
-        if trusted is not None:
-            self.trusted = trusted
-        if onerror is not None:
-            self.onerror = onerror
-        if standards is not None:
-            self.standards = standards
-        if http_session is not None:
-            self.__http_session = http_session
-        yield self
-
-        # Recover
-        self.trusted = current_trusted
-        self.onerror = current_onerror
-        self.standards = current_standards
-        self.__http_session = current_http_session
+        pass
 
     # Hooks
 
@@ -253,10 +201,7 @@ class System:
             resource (Resource): resource
 
         """
-        resource.detector.detect_resource(resource)
-        for func in self.methods["detect_resource"].values():
-            func(resource)
-        resource.datatype = resource.datatype or "file"
+        pass
 
     def detect_field_candidates(self) -> List[dict[str, Any]]:
         """Create candidates
@@ -264,10 +209,7 @@ class System:
         Returns:
             dict[]: an ordered by priority list of type descriptors for type detection
         """
-        candidates = settings.DEFAULT_FIELD_CANDIDATES.copy()
-        for func in self.methods["detect_field_candidates"].values():
-            func(candidates)
-        return candidates
+        pass
 
     def select_check_class(self, type: Optional[str] = None) -> Type[Check]:
         if not type:

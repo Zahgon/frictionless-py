@@ -27,22 +27,7 @@ class ZipAdapter(Adapter):
     # Read
 
     def read_package(self):
-        innerpath = self.control.innerpath
-        resource = FileResource(path=self.source)
-        resource.compression = None
-        with resource:
-            byte_stream = resource.byte_stream
-            if resource.remote:
-                byte_stream = tempfile.TemporaryFile()
-                shutil.copyfileobj(resource.byte_stream, byte_stream)
-                byte_stream.seek(0)
-            with platform.zipfile.ZipFile(byte_stream, "r") as zip:
-                tempdir = tempfile.mkdtemp()
-                zip.extractall(tempdir)
-                atexit.register(shutil.rmtree, tempdir)
-                innerpath = innerpath or "datapackage.json"
-            descriptor = os.path.join(tempdir, innerpath)
-        return Package.from_descriptor(descriptor)
+        pass
 
     # Write
 

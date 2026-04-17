@@ -119,36 +119,7 @@ class SqlMapper(Mapper):
 
     def read_type(self, column_type: str) -> str:
         """Convert sqlalchemy type to frictionless type"""
-        sa = platform.sqlalchemy
-        sapg = platform.sqlalchemy_dialects_postgresql
-        sams = platform.sqlalchemy_dialects_mysql
-
-        # General mapping
-        mapping = {
-            sapg.ARRAY: "array",
-            sams.BIT: "string",
-            sa.Boolean: "boolean",
-            sa.Date: "date",
-            sa.DateTime: "datetime",
-            sa.Float: "number",
-            sa.Integer: "integer",
-            sapg.JSONB: "object",
-            sapg.JSON: "object",
-            sa.Numeric: "number",
-            sa.Text: "string",
-            sa.Time: "time",
-            sams.VARBINARY: "string",
-            sams.VARCHAR: "string",
-            sa.VARCHAR: "string",
-            sapg.UUID: "string",
-        }
-
-        # Return type
-        field_type = "string"
-        for type_class, value in mapping.items():
-            if isinstance(column_type, type_class):
-                field_type = value
-        return field_type
+        pass
 
     # Write
 
