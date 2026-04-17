@@ -9,7 +9,15 @@ def extras(*, name: str):
     """Extra dependency decorator"""
 
     def outer(func: Callable[..., Any]):
-        pass
+        def inner(*args: Any, **kwargs: Any):
+            try:
+                return func(*args, **kwargs)
+            except Exception:
+                module = import_module("frictionless.exception")
+                note = f'Please install "frictionless[{name}]"'
+                raise module.FrictionlessException(note)
+
+        return inner
 
     return outer
 
